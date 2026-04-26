@@ -39,3 +39,18 @@
 
 # debug information files
 *.dwo
+
+# Build directories
+cmake-build-debug/
+cmake-build-release/
+/build/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+build.ninja
+
+# IDE specific files
+.idea/
+*.log
