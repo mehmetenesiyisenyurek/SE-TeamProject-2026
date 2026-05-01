@@ -14,21 +14,21 @@ SourceFile::SourceFile(const std::string& filePath,const std::string& fileName,c
 }
 
 std::string SourceFile::getContent() const{
-    return this->content;
+    return content;
 }
 
 std::string SourceFile::getFileName() const{
-    return this->fileName;
+    return fileName;
 }
 
 std::string SourceFile::getFilePath() const{
-    return this->filePath;
+    return filePath;
 }
 
 long SourceFile::getFileSize() const{
-    return this->fileSize;
+    return fileSize;
 }
 
 bool SourceFile::isEmpty() const{
-    return this->content.empty();
+    return content.empty();
 }

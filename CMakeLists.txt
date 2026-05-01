@@ -8,4 +8,9 @@ set(CMAKE_CXX_STANDARD 17)
 # Alttaki boş project() komutunu sildik
 add_executable("SE-TeamProject-2026" main.cpp
         infrastructure/SourceFile.cpp
-        infrastructure/SourceFile.h)
+        infrastructure/SourceFile.h
+        infrastructure/DiagnosticSeverity.h
+        infrastructure/Diagnostic.cpp
+        infrastructure/Diagnostic.h
+        infrastructure/CodeMetric.cpp
+        infrastructure/CodeMetric.h)
