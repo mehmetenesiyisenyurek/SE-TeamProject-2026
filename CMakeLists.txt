@@ -13,4 +13,6 @@ add_executable("SE-TeamProject-2026" main.cpp
         infrastructure/Diagnostic.cpp
         infrastructure/Diagnostic.h
         infrastructure/CodeMetric.cpp
-        infrastructure/CodeMetric.h)
+        infrastructure/CodeMetric.h
+        infrastructure/ValidationResult.cpp
+        infrastructure/ValidationResult.h)
