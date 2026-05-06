@@ -27,6 +27,10 @@ std::vector<Diagnostic> RuleEngine::analyzeAll(const ASTNode& ast) {
 
         std::vector<Diagnostic> diagnostics = rule->check(ast);
 
+        if (diagnostics.empty()) {
+            continue;
+        }
+
         allDiagnostics.insert(
             allDiagnostics.end(),
             diagnostics.begin(),
@@ -41,4 +45,10 @@ std::vector<Diagnostic> RuleEngine::analyzeAll(const ASTNode& ast) {
  */
 int RuleEngine::getRuleCount() const {
     return static_cast<int>(rules.size());
+}
+/*
+ * Sistemde kayıtlı tüm analiz kurallarını temizler.
+ */
+void RuleEngine::clearRules() {
+    rules.clear();
 }

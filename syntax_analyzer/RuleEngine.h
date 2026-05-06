@@ -29,6 +29,9 @@ public:
 
     // Eklenen kural sayısını döndürür
     int getRuleCount() const;
+
+    // Sistemdeki tüm kuralları temizler
+    void clearRules();
 };
 
 #endif
