@@ -36,3 +36,9 @@ std::vector<Diagnostic> RuleEngine::analyzeAll(const ASTNode& ast) {
 
     return allDiagnostics;
 }
+/*
+ * Eklenen analiz kuralı sayısını döndürür.
+ */
+int RuleEngine::getRuleCount() const {
+    return static_cast<int>(rules.size());
+}

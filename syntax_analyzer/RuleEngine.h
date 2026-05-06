@@ -26,6 +26,9 @@ public:
 
     // Tüm kuralları çalıştırır
     std::vector<Diagnostic> analyzeAll(const ASTNode& ast);
+
+    // Eklenen kural sayısını döndürür
+    int getRuleCount() const;
 };
 
 #endif
