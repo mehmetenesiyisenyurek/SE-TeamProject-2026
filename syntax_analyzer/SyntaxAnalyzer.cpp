@@ -2,7 +2,7 @@
 
 /*
  * AST ve token listesi üzerinde syntax analizi yapar.
- * Şimdilik boş diagnostic listesi döndürülüyor.
+ * Şimdilik örnek syntax diagnostic üretir.
  */
 std::vector<Diagnostic> SyntaxAnalyzer::analyze(
     const ASTNode& ast,
@@ -10,6 +10,18 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
 ) {
 
     std::vector<Diagnostic> diagnostics;
+
+    Diagnostic diagnostic(
+        10,
+        12,
+        "Missing semicolon",
+        DiagnosticSeverity::CRITICAL,
+        "syntax",
+        "",
+        "int number = 5"
+    );
+
+    diagnostics.push_back(diagnostic);
 
     return diagnostics;
 }
