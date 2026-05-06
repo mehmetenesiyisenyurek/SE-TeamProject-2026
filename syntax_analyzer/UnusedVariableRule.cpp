@@ -16,11 +16,23 @@ std::string UnusedVariableRule::getName() const {
 
 /*
  * Kullanılmayan değişken analizini yapar.
- * Şimdilik örnek olarak boş diagnostic listesi döndürülüyor.
+ * Şimdilik örnek diagnostic üretir.
  */
 std::vector<Diagnostic> UnusedVariableRule::check(const ASTNode& ast) {
 
     std::vector<Diagnostic> diagnostics;
+
+    Diagnostic diagnostic(
+        1,
+        1,
+        "Unused variable detected",
+        DiagnosticSeverity::WARNING,
+        "rule",
+        "R001",
+        "int temp;"
+    );
+
+    diagnostics.push_back(diagnostic);
 
     return diagnostics;
 }
