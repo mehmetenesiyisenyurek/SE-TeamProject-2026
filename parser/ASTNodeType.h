@@ -20,5 +20,24 @@ enum class ASTNodeType {
     STRUCT_DEF,      // Struct tanımı
     BLOCK            // Kod bloğu : if, for, while vb.
 };
+// Hata ayıklama ve loglama için eklendi.
+inline std::string astNodeTypeToString(ASTNodeType type) {
+    switch (type) {
+    case ASTNodeType::PROGRAM:       return "PROGRAM";
+    case ASTNodeType::FUNCTION_DEF:  return "FUNCTION_DEF";
+    case ASTNodeType::VARIABLE_DECL: return "VARIABLE_DECL";
+    case ASTNodeType::IF_STATEMENT:  return "IF_STATEMENT";
+    case ASTNodeType::WHILE_LOOP:    return "WHILE_LOOP";
+    case ASTNodeType::FOR_LOOP:      return "FOR_LOOP";
+    case ASTNodeType::RETURN_STMT:   return "RETURN_STMT";
+    case ASTNodeType::ASSIGNMENT:    return "ASSIGNMENT";
+    case ASTNodeType::EXPRESSION:    return "EXPRESSION";
+    case ASTNodeType::BINARY_OP:     return "BINARY_OP";
+    case ASTNodeType::FUNCTION_CALL: return "FUNCTION_CALL";
+    case ASTNodeType::STRUCT_DEF:    return "STRUCT_DEF";
+    case ASTNodeType::BLOCK:         return "BLOCK";
+    default:                         return "UNKNOWN";
+    }
+}
 
 #endif //ASTNODETYPE_H
