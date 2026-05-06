@@ -16,11 +16,23 @@ std::string UninitializedPointerRule::getName() const {
 
 /*
  * Başlatılmamış pointer kullanımını analiz eder.
- * Şimdilik boş diagnostic listesi döndürülüyor.
+ * Şimdilik örnek diagnostic üretir.
  */
 std::vector<Diagnostic> UninitializedPointerRule::check(const ASTNode& ast) {
 
     std::vector<Diagnostic> diagnostics;
+
+    Diagnostic diagnostic(
+        7,
+        3,
+        "Uninitialized pointer detected",
+        DiagnosticSeverity::CRITICAL,
+        "rule",
+        "R012",
+        "int* ptr;"
+    );
+
+    diagnostics.push_back(diagnostic);
 
     return diagnostics;
 }
