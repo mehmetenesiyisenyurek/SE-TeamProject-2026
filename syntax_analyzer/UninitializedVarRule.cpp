@@ -16,11 +16,23 @@ std::string UninitializedVarRule::getName() const {
 
 /*
  * Başlatılmadan kullanılan değişkenleri analiz eder.
- * Şimdilik boş diagnostic listesi döndürülüyor.
+ * Şimdilik örnek diagnostic üretir.
  */
 std::vector<Diagnostic> UninitializedVarRule::check(const ASTNode& ast) {
 
     std::vector<Diagnostic> diagnostics;
+
+    Diagnostic diagnostic(
+        3,
+        5,
+        "Variable used before initialization",
+        DiagnosticSeverity::CRITICAL,
+        "rule",
+        "R002",
+        "int x;"
+    );
+
+    diagnostics.push_back(diagnostic);
 
     return diagnostics;
 }
