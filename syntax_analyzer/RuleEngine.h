@@ -4,8 +4,10 @@
 #include <vector>
 
 #include "IRule.h"
-#include "ASTNode.h"
-#include "Diagnostic.h"
+
+#include "../infrastructure/Diagnostic.h"
+
+class ASTNode;
 
 /*
  * RuleEngine:

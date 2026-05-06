@@ -4,8 +4,9 @@
 #include <string>
 #include <vector>
 
-#include "ASTNode.h"
-#include "Diagnostic.h"
+#include "../infrastructure/Diagnostic.h"
+
+class ASTNode;
 
 /*
  * IRule:
