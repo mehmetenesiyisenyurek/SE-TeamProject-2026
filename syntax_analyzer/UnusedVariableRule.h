@@ -31,6 +31,19 @@ public:
 
     // AST üzerinde kullanılmayan değişken analizi yapar
     std::vector<Diagnostic> check(const ASTNode& ast) override;
+
+private:
+    // Tanımlanan değişkenleri toplar
+    void collectDeclaredVars(
+        const ASTNode& node,
+        std::vector<std::string>& declaredVars
+    ) const;
+
+    // Kullanılan değişkenleri toplar
+    void collectUsedVars(
+        const ASTNode& node,
+        std::vector<std::string>& usedVars
+    ) const;
 };
 
 #endif

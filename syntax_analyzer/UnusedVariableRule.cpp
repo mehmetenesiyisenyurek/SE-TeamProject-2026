@@ -36,6 +36,14 @@ std::vector<Diagnostic> UnusedVariableRule::check(const ASTNode& ast) {
 
     std::vector<Diagnostic> diagnostics;
 
+    std::vector<std::string> declaredVars;
+
+    std::vector<std::string> usedVars;
+
+    collectDeclaredVars(ast, declaredVars);
+
+    collectUsedVars(ast, usedVars);
+
     Diagnostic diagnostic(
         1,
         1,
@@ -49,4 +57,24 @@ std::vector<Diagnostic> UnusedVariableRule::check(const ASTNode& ast) {
     diagnostics.push_back(diagnostic);
 
     return diagnostics;
+}
+
+/*
+ * Tanımlanan değişkenleri toplar.
+ */
+void UnusedVariableRule::collectDeclaredVars(
+    const ASTNode& node,
+    std::vector<std::string>& declaredVars
+) const {
+
+}
+
+/*
+ * Kullanılan değişkenleri toplar.
+ */
+void UnusedVariableRule::collectUsedVars(
+    const ASTNode& node,
+    std::vector<std::string>& usedVars
+) const {
+
 }
