@@ -7,4 +7,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Alttaki boş project() komutunu sildik
 add_executable("SE-TeamProject-2026" main.cpp
-        parser/ASTNodeType.h)
+        parser/ASTNodeType.h
+        parser/ASTNode.cpp
+        parser/ASTNode.h)
