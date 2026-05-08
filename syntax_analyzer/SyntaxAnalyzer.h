@@ -11,10 +11,13 @@ class Token;
 /*
  * SyntaxAnalyzer:
  * C kaynak kodundaki temel sözdizimi hatalarını tespit eder.
- * Eksik noktalı virgül, eşleşmeyen parantez ve benzeri
- * syntax problemlerini Diagnostic listesi olarak döndürür.
  */
 class SyntaxAnalyzer {
+private:
+
+    // Token listesi boşsa true döndürür
+    bool isTokenListEmpty(const std::vector<Token>& tokens) const;
+
 public:
 
     // AST ve token listesi üzerinden syntax analizi yapar
