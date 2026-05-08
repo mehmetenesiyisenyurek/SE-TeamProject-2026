@@ -4,7 +4,7 @@
 //#include "../parser/ASTNode.h"
 //#include "../parser/ASTNodeType.h"
 
-#include <stack>
+//#include <stack>
 /*
  * AST ve token listesi üzerinde syntax analizi yapar.
  * Token listesi boşsa temel syntax hatası üretir.
@@ -23,8 +23,7 @@ bool SyntaxAnalyzer::isTokenListEmpty(const std::vector<Token>& tokens) const {
 Diagnostic SyntaxAnalyzer::createSyntaxDiagnostic(
     int line,
     int column,
-    const std::string& message,
-    DiagnosticSeverity severity
+    const std::string& message
 ) const {
 
     return Diagnostic(
@@ -67,8 +66,7 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
         Diagnostic diagnostic = createSyntaxDiagnostic(
             1,
             1,
-            "No tokens found for syntax analysis",
-            DiagnosticSeverity::CRITICAL
+            "Syntax analizi için token bulunamadı."
         );
 
         diagnostics.push_back(diagnostic);
@@ -76,7 +74,7 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
         return diagnostics;
     }
 
-    checkMissingSemicolon(ast, diagnostics);
+    checkMissingSemicolon(ast, tokens, diagnostics);
 
     checkUnmatchedBrackets(tokens, diagnostics);
 
@@ -101,34 +99,46 @@ std::string SyntaxAnalyzer::getSyntaxSource() const {
  */
 void SyntaxAnalyzer::checkMissingSemicolon(
     const ASTNode& node,
+    const std::vector<Token>& tokens,
     std::vector<Diagnostic>& diagnostics
-) {
+){
 
     /*
-    if (
-        node.getType() == ASTNodeType::VARIABLE_DECL ||
-        node.getType() == ASTNodeType::RETURN_STMT ||
-        node.getType() == ASTNodeType::EXPRESSION ||
-        node.getType() == ASTNodeType::FUNCTION_CALL
-    ) {
+if (
+    node.getType() == ASTNodeType::VARIABLE_DECL ||
+    node.getType() == ASTNodeType::ASSIGNMENT ||
+    node.getType() == ASTNodeType::RETURN_STMT ||
+    node.getType() == ASTNodeType::FUNCTION_CALL
+) {
+    bool hasSemicolonOnSameLine = false;
 
-        if (!node.endsWithSemicolon()) {
-
-            Diagnostic diagnostic = createSyntaxDiagnostic(
-                node.getLine(),
-                1,
-                "Missing semicolon",
-                DiagnosticSeverity::CRITICAL
-            );
-
-            diagnostics.push_back(diagnostic);
+    for (const Token& token : tokens) {
+        if (
+            token.getLine() == node.getLine() &&
+            token.getValue() == ";"
+        ) {
+            hasSemicolonOnSameLine = true;
+            break;
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        checkMissingSemicolon(child, diagnostics);
+    if (!hasSemicolonOnSameLine) {
+        Diagnostic diagnostic = createSyntaxDiagnostic(
+            node.getLine(),
+            1,
+            "Eksik noktalı virgül."
+        );
+
+        diagnostics.push_back(diagnostic);
     }
-    */
+}
+
+for (const ASTNode* child : node.getChildren()) {
+    if (child != nullptr) {
+        checkMissingSemicolon(*child, tokens, diagnostics);
+    }
+}
+*/
 }
 
 /*
@@ -157,7 +167,6 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
                     token.getLine(),
                     token.getColumn(),
                     "Unmatched closing bracket",
-                    DiagnosticSeverity::CRITICAL
                 );
 
                 diagnostics.push_back(diagnostic);
@@ -177,7 +186,6 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
             token.getLine(),
             token.getColumn(),
             "Unmatched opening bracket",
-            DiagnosticSeverity::CRITICAL
         );
 
         diagnostics.push_back(diagnostic);
@@ -211,7 +219,6 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
                     token.getLine(),
                     token.getColumn(),
                     "Unmatched closing parenthesis",
-                    DiagnosticSeverity::CRITICAL
                 );
 
                 diagnostics.push_back(diagnostic);
@@ -235,7 +242,6 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
                         token.getLine(),
                         token.getColumn(),
                         "Mismatched parenthesis type",
-                        DiagnosticSeverity::CRITICAL
                     );
 
                     diagnostics.push_back(diagnostic);
@@ -254,7 +260,6 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
             token.getLine(),
             token.getColumn(),
             "Unmatched opening parenthesis",
-            DiagnosticSeverity::CRITICAL
         );
 
         diagnostics.push_back(diagnostic);
@@ -281,15 +286,16 @@ void SyntaxAnalyzer::checkInvalidDeclarations(
                 node.getLine(),
                 1,
                 "Invalid variable declaration",
-                DiagnosticSeverity::CRITICAL
             );
 
             diagnostics.push_back(diagnostic);
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        checkInvalidDeclarations(child, diagnostics);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            checkInvalidDeclarations(*child, diagnostics);
+        }
     }
     */
 }

@@ -23,9 +23,6 @@ public:
     // Kural adını döndürür
     std::string getName() const override;
 
-    // Kural açıklamasını döndürür
-    std::string getDescription() const override;
-
     // Varsayılan severity seviyesini döndürür
     DiagnosticSeverity getDefaultSeverity() const override;
 
@@ -46,7 +43,7 @@ private:
         std::vector<std::string>& dereferencedPointers
     ) const;
 
-    // Pointer'ın başlatılıp başlatılmadığını kontrol eder
+    // Pointer'ın başlatılmamış pointer listesinde olup olmadığını kontrol eder
     bool isPointerInitialized(
         const std::string& pointerName,
         const std::vector<std::string>& initializedPointers

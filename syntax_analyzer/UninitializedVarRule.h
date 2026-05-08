@@ -23,9 +23,6 @@ public:
     // Kural adını döndürür
     std::string getName() const override;
 
-    // Kural açıklamasını döndürür
-    std::string getDescription() const override;
-
     // Varsayılan severity seviyesini döndürür
     DiagnosticSeverity getDefaultSeverity() const override;
 
@@ -46,7 +43,7 @@ private:
         std::vector<std::string>& usedVars
     ) const;
 
-    // Değişkenin başlatılıp başlatılmadığını kontrol eder
+    // Değişkenin başlatılmamış değişkenler listesinde olup olmadığını kontrol eder
     bool isVariableInitialized(
         const std::string& variableName,
         const std::vector<std::string>& initializedVars

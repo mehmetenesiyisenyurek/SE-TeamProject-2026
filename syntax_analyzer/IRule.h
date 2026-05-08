@@ -26,9 +26,6 @@ public:
     // Kural adını döndürür
     virtual std::string getName() const = 0;
 
-    // Kural açıklamasını döndürür
-    virtual std::string getDescription() const = 0;
-
     // Kuralın varsayılan severity seviyesini döndürür
     virtual DiagnosticSeverity getDefaultSeverity() const = 0;
 

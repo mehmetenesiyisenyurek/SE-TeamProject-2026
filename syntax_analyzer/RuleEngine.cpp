@@ -5,7 +5,7 @@
 #include "UninitializedPointerRule.h"
 
 /*
- * RuleEngine oluşturulduğunda varsayılan analiz kurallarını ekler.
+ * RuleEngine oluşturulduğunda bu modüle ait varsayılan analiz kurallarını ekler.
  */
 RuleEngine::RuleEngine() {
     registerDefaultRules();

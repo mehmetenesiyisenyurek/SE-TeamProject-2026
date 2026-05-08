@@ -33,7 +33,7 @@ private:
 
 public:
 
-    // RuleEngine oluşturulduğunda varsayılan kuralları hazırlar
+    // RuleEngine oluşturulduğunda bu modüle ait varsayılan kuralları hazırlar
     RuleEngine();
 
     // Yeni bir kural ekler

@@ -21,10 +21,9 @@ private:
 
     // Syntax diagnostic nesnesi oluşturur
     Diagnostic createSyntaxDiagnostic(
-        int line,
-        int column,
-        const std::string& message,
-        DiagnosticSeverity severity
+    int line,
+    int column,
+    const std::string& message
     ) const;
 
     // Syntax hata mesajına göre severity belirler
@@ -38,6 +37,7 @@ private:
     // Eksik noktalı virgül kontrolü yapar
     void checkMissingSemicolon(
         const ASTNode& node,
+        const std::vector<Token>& tokens,
         std::vector<Diagnostic>& diagnostics
     );
 

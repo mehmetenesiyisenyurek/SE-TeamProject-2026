@@ -23,9 +23,6 @@ public:
     // Kural adını döndürür
     std::string getName() const override;
 
-    // Kural açıklamasını döndürür
-    std::string getDescription() const override;
-
     // Varsayılan severity seviyesini döndürür
     DiagnosticSeverity getDefaultSeverity() const override;
 

@@ -18,13 +18,6 @@ std::string UninitializedPointerRule::getName() const {
 }
 
 /*
- * Kural açıklamasını döndürür.
- */
-std::string UninitializedPointerRule::getDescription() const {
-    return "Detects uninitialized pointer usage.";
-}
-
-/*
  * Varsayılan severity seviyesini döndürür.
  */
 DiagnosticSeverity UninitializedPointerRule::getDefaultSeverity() const {
@@ -54,8 +47,7 @@ std::vector<Diagnostic> UninitializedPointerRule::check(const ASTNode& ast) {
             Diagnostic diagnostic(
                 1,
                 1,
-                "Pointer '" + pointer +
-                "' may be dereferenced before initialization",
+                "Pointer '" + pointer + "' başlatılmadan dereference ediliyor.",
                 getDefaultSeverity(),
                 "rule",
                 getId(),
@@ -80,18 +72,17 @@ void UninitializedPointerRule::collectUninitializedPointers(
     /*
     if (node.getType() == ASTNodeType::VARIABLE_DECL) {
 
-        if (node.isPointerDeclaration() && !node.hasInitializer()) {
+        std::string pointerName = node.getValue();
 
-            std::string pointerName = node.getValue();
-
-            if (!pointerName.empty()) {
-                pointers.push_back(pointerName);
-            }
+        if (!pointerName.empty()) {
+            pointers.push_back(pointerName);
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        collectUninitializedPointers(child, pointers);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            collectUninitializedPointers(*child, pointers);
+        }
     }
     */
 }
@@ -107,24 +98,23 @@ void UninitializedPointerRule::collectDereferencedPointers(
     /*
     if (node.getType() == ASTNodeType::EXPRESSION) {
 
-        if (node.isPointerDereference()) {
+        std::string pointerName = node.getValue();
 
-            std::string pointerName = node.getValue();
-
-            if (!pointerName.empty()) {
-                dereferencedPointers.push_back(pointerName);
-            }
+        if (!pointerName.empty()) {
+            dereferencedPointers.push_back(pointerName);
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        collectDereferencedPointers(child, dereferencedPointers);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            collectDereferencedPointers(*child, dereferencedPointers);
+        }
     }
     */
 }
 
 /*
- * Pointer'ın başlatılıp başlatılmadığını kontrol eder.
+ * Pointer'ın başlatılmamış pointer listesinde olup olmadığını kontrol eder.
  */
 bool UninitializedPointerRule::isPointerInitialized(
     const std::string& pointerName,

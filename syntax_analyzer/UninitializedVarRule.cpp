@@ -18,13 +18,6 @@ std::string UninitializedVarRule::getName() const {
 }
 
 /*
- * Kural açıklamasını döndürür.
- */
-std::string UninitializedVarRule::getDescription() const {
-    return "Detects variables used before initialization.";
-}
-
-/*
  * Varsayılan severity seviyesini döndürür.
  */
 DiagnosticSeverity UninitializedVarRule::getDefaultSeverity() const {
@@ -54,8 +47,7 @@ std::vector<Diagnostic> UninitializedVarRule::check(const ASTNode& ast) {
             Diagnostic diagnostic(
                 1,
                 1,
-                "Variable '" + usedVar +
-                "' may be used before initialization",
+                "Değişken '" + usedVar + "' başlatılmadan kullanılıyor.",
                 getDefaultSeverity(),
                 "rule",
                 getId(),
@@ -82,13 +74,15 @@ void UninitializedVarRule::collectUninitializedVars(
 
         std::string variableName = node.getValue();
 
-        if (!variableName.empty() && !node.hasInitializer()) {
+        if (!variableName.empty()) {
             uninitializedVars.push_back(variableName);
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        collectUninitializedVars(child, uninitializedVars);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            collectUninitializedVars(*child, uninitializedVars);
+        }
     }
     */
 }
@@ -102,7 +96,12 @@ void UninitializedVarRule::collectUsedVars(
 ) const {
 
     /*
-    if (node.getType() == ASTNodeType::IDENTIFIER) {
+    if (
+        node.getType() == ASTNodeType::EXPRESSION ||
+        node.getType() == ASTNodeType::ASSIGNMENT ||
+        node.getType() == ASTNodeType::BINARY_OP ||
+        node.getType() == ASTNodeType::FUNCTION_CALL
+    ) {
 
         std::string variableName = node.getValue();
 
@@ -111,14 +110,16 @@ void UninitializedVarRule::collectUsedVars(
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        collectUsedVars(child, usedVars);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            collectUsedVars(*child, usedVars);
+        }
     }
     */
 }
 
 /*
- * Değişkenin başlatılıp başlatılmadığını kontrol eder.
+ * Değişkenin başlatılmamış değişkenler listesinde olup olmadığını kontrol eder.
  */
 bool UninitializedVarRule::isVariableInitialized(
     const std::string& variableName,

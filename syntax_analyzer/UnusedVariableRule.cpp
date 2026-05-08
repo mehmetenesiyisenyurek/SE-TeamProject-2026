@@ -26,13 +26,6 @@ std::string UnusedVariableRule::getName() const {
 }
 
 /*
- * Kural açıklamasını döndürür.
- */
-std::string UnusedVariableRule::getDescription() const {
-    return "Detects variables that are declared but never used.";
-}
-
-/*
  * Varsayılan severity seviyesini döndürür.
  */
 DiagnosticSeverity UnusedVariableRule::getDefaultSeverity() const {
@@ -66,7 +59,7 @@ std::vector<Diagnostic> UnusedVariableRule::check(const ASTNode& ast) {
             Diagnostic diagnostic(
                 1,
                 1,
-                "Variable '" + declaredVar + "' is declared but never used",
+                "Değişken '" + declaredVar + "' tanımlanmış ancak hiç kullanılmamış.",
                 getDefaultSeverity(),
                 "rule",
                 getId(),
@@ -98,9 +91,11 @@ void UnusedVariableRule::collectDeclaredVars(
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        collectDeclaredVars(child, declaredVars);
+    for (const ASTNode* child : node.getChildren()) {
+    if (child != nullptr) {
+        collectDeclaredVars(*child, declaredVars);
     }
+}
     */
 }
 
@@ -113,7 +108,12 @@ void UnusedVariableRule::collectUsedVars(
 ) const {
 
     /*
-    if (node.getType() == ASTNodeType::IDENTIFIER) {
+    if (
+        node.getType() == ASTNodeType::EXPRESSION ||
+        node.getType() == ASTNodeType::ASSIGNMENT ||
+        node.getType() == ASTNodeType::BINARY_OP ||
+        node.getType() == ASTNodeType::FUNCTION_CALL
+    ) {
 
         std::string variableName = node.getValue();
 
@@ -122,8 +122,10 @@ void UnusedVariableRule::collectUsedVars(
         }
     }
 
-    for (const ASTNode& child : node.getChildren()) {
-        collectUsedVars(child, usedVars);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            collectUsedVars(*child, usedVars);
+        }
     }
     */
 }
