@@ -22,6 +22,13 @@ std::string UnusedVariableRule::getDescription() const {
 }
 
 /*
+ * Varsayılan severity seviyesini döndürür.
+ */
+DiagnosticSeverity UnusedVariableRule::getDefaultSeverity() const {
+    return DiagnosticSeverity::WARNING;
+}
+
+/*
  * Kullanılmayan değişken analizini yapar.
  * Şimdilik örnek diagnostic üretir.
  */

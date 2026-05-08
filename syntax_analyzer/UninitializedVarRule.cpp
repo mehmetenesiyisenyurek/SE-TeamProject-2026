@@ -22,6 +22,13 @@ std::string UninitializedVarRule::getDescription() const {
 }
 
 /*
+ * Varsayılan severity seviyesini döndürür.
+ */
+DiagnosticSeverity UninitializedVarRule::getDefaultSeverity() const {
+    return DiagnosticSeverity::WARNING;
+}
+
+/*
  * Başlatılmadan kullanılan değişkenleri analiz eder.
  * Şimdilik örnek diagnostic üretir.
  */

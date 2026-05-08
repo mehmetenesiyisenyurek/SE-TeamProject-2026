@@ -26,6 +26,9 @@ public:
     // Kural açıklamasını döndürür
     std::string getDescription() const override;
 
+    // Varsayılan severity seviyesini döndürür
+    DiagnosticSeverity getDefaultSeverity() const override;
+
     // AST üzerinde başlatılmamış değişken analizi yapar
     std::vector<Diagnostic> check(const ASTNode& ast) override;
 };

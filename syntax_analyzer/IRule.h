@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "../infrastructure/Diagnostic.h"
+#include "../infrastructure/DiagnosticSeverity.h"
 
 class ASTNode;
 
@@ -27,6 +28,9 @@ public:
 
     // Kural açıklamasını döndürür
     virtual std::string getDescription() const = 0;
+
+    // Kuralın varsayılan severity seviyesini döndürür
+    virtual DiagnosticSeverity getDefaultSeverity() const = 0;
 
     // AST üzerinde analiz yapar ve bulguları döndürür
     virtual std::vector<Diagnostic> check(const ASTNode& ast) = 0;

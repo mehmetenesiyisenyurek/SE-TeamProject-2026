@@ -22,6 +22,13 @@ std::string UninitializedPointerRule::getDescription() const {
 }
 
 /*
+ * Varsayılan severity seviyesini döndürür.
+ */
+DiagnosticSeverity UninitializedPointerRule::getDefaultSeverity() const {
+    return DiagnosticSeverity::CRITICAL;
+}
+
+/*
  * Başlatılmamış pointer kullanımını analiz eder.
  * Şimdilik örnek diagnostic üretir.
  */
