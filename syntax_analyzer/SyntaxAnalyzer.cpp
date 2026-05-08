@@ -92,15 +92,40 @@ std::string SyntaxAnalyzer::getSyntaxSource() const {
 }
 
 /*
-    * Eksik noktalı virgül kontrolü yapar.
-    * TODO: ASTNode tamamlandığında VARIABLE_DECL, RETURN_STMT,
-    * ASSIGNMENT ve FUNCTION_CALL düğümleri üzerinde ';' kontrolü yapılacak.
+ * Eksik noktalı virgül kontrolü yapar.
+ * TODO: ASTNode tamamlandığında VARIABLE_DECL, RETURN_STMT,
+ * ASSIGNMENT ve FUNCTION_CALL düğümleri üzerinde ';' kontrolü yapılacak.
  */
 void SyntaxAnalyzer::checkMissingSemicolon(
     const ASTNode& node,
     std::vector<Diagnostic>& diagnostics
 ) {
 
+    /*
+    if (
+        node.getType() == ASTNodeType::VARIABLE_DECL ||
+        node.getType() == ASTNodeType::RETURN_STMT ||
+        node.getType() == ASTNodeType::EXPRESSION ||
+        node.getType() == ASTNodeType::FUNCTION_CALL
+    ) {
+
+        if (!node.endsWithSemicolon()) {
+
+            Diagnostic diagnostic = createSyntaxDiagnostic(
+                node.getLine(),
+                1,
+                "Missing semicolon",
+                DiagnosticSeverity::CRITICAL
+            );
+
+            diagnostics.push_back(diagnostic);
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        checkMissingSemicolon(child, diagnostics);
+    }
+    */
 }
 
 /*
@@ -167,6 +192,71 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
     std::vector<Diagnostic>& diagnostics
 ) {
 
+    /*
+    std::stack<Token> parenthesisStack;
+
+    for (const Token& token : tokens) {
+
+        if (token.getValue() == "(" || token.getValue() == "[") {
+            parenthesisStack.push(token);
+        }
+        else if (token.getValue() == ")" || token.getValue() == "]") {
+
+            if (parenthesisStack.empty()) {
+
+                Diagnostic diagnostic = createSyntaxDiagnostic(
+                    token.getLine(),
+                    token.getColumn(),
+                    "Unmatched closing parenthesis",
+                    DiagnosticSeverity::CRITICAL
+                );
+
+                diagnostics.push_back(diagnostic);
+            }
+            else {
+                Token openingToken = parenthesisStack.top();
+
+                bool matchesRound =
+                    openingToken.getValue() == "(" &&
+                    token.getValue() == ")";
+
+                bool matchesSquare =
+                    openingToken.getValue() == "[" &&
+                    token.getValue() == "]";
+
+                if (matchesRound || matchesSquare) {
+                    parenthesisStack.pop();
+                }
+                else {
+                    Diagnostic diagnostic = createSyntaxDiagnostic(
+                        token.getLine(),
+                        token.getColumn(),
+                        "Mismatched parenthesis type",
+                        DiagnosticSeverity::CRITICAL
+                    );
+
+                    diagnostics.push_back(diagnostic);
+                    parenthesisStack.pop();
+                }
+            }
+        }
+    }
+
+    while (!parenthesisStack.empty()) {
+
+        Token token = parenthesisStack.top();
+        parenthesisStack.pop();
+
+        Diagnostic diagnostic = createSyntaxDiagnostic(
+            token.getLine(),
+            token.getColumn(),
+            "Unmatched opening parenthesis",
+            DiagnosticSeverity::CRITICAL
+        );
+
+        diagnostics.push_back(diagnostic);
+    }
+    */
 }
 
 /*
@@ -179,4 +269,24 @@ void SyntaxAnalyzer::checkInvalidDeclarations(
     std::vector<Diagnostic>& diagnostics
 ) {
 
+    /*
+    if (node.getType() == ASTNodeType::VARIABLE_DECL) {
+
+        if (node.getValue().empty()) {
+
+            Diagnostic diagnostic = createSyntaxDiagnostic(
+                node.getLine(),
+                1,
+                "Invalid variable declaration",
+                DiagnosticSeverity::CRITICAL
+            );
+
+            diagnostics.push_back(diagnostic);
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        checkInvalidDeclarations(child, diagnostics);
+    }
+    */
 }
