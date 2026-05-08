@@ -2,7 +2,60 @@
 
 vector<Diagnostic>
 UseAfterFreeRule::check(ASTNode* ast) {
-    return {};
+
+    // Üretilecek diagnostic mesajları
+    vector<Diagnostic> diagnostics;
+
+    // AST boşsa çık
+    if (ast == nullptr) {
+        return diagnostics;
+    }
+
+    // Sadece fonksiyon içinde analiz yap
+    if (ast->type == "FUNCTION_DEF") {
+
+        // Tüm free(ptr) çağrılarını bul
+        vector<pair<string, int>> freeCalls =
+                findFreeCallSites(ast);
+
+        // Her free çağrısını kontrol et
+        for (const auto& freeCall : freeCalls) {
+
+            string variableName = freeCall.first;
+
+            int freeLine = freeCall.second;
+
+            // free sonrası tekrar kullanım var mı?
+            if (isUsedAfterFree(
+                    variableName,
+                    freeLine,
+                    ast
+            )) {
+
+                diagnostics.emplace_back(
+                        "R008",
+                        "free edildikten sonra pointer tekrar kullaniliyor: "
+                        + variableName,
+                        freeLine
+                );
+            }
+        }
+    }
+
+    // Alt AST düğümlerini recursive tara
+    for (ASTNode* child : ast->children) {
+
+        vector<Diagnostic> childDiagnostics =
+                check(child);
+
+        diagnostics.insert(
+                diagnostics.end(),
+                childDiagnostics.begin(),
+                childDiagnostics.end()
+        );
+    }
+
+    return diagnostics;
 }
 
 vector<pair<string, int>>
