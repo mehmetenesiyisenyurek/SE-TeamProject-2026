@@ -212,3 +212,33 @@ std::vector<std::string> RuleEngine::getRuleNames() const {
 
     return ruleNames;
 }
+
+/*
+ * Kritik diagnostic bulunup bulunmadığını kontrol eder.
+ */
+bool RuleEngine::hasCriticalDiagnostics(
+    const std::vector<Diagnostic>& diagnostics
+) const {
+
+    return countCriticalDiagnostics(diagnostics) > 0;
+}
+
+/*
+ * Warning diagnostic bulunup bulunmadığını kontrol eder.
+ */
+bool RuleEngine::hasWarningDiagnostics(
+    const std::vector<Diagnostic>& diagnostics
+) const {
+
+    return countWarningDiagnostics(diagnostics) > 0;
+}
+
+/*
+ * Toplam diagnostic sayısını döndürür.
+ */
+int RuleEngine::countDiagnostics(
+    const std::vector<Diagnostic>& diagnostics
+) const {
+
+    return static_cast<int>(diagnostics.size());
+}

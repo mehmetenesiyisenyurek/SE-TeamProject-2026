@@ -69,6 +69,21 @@ public:
 
     // Sistemde kayıtlı tüm kural isimlerini döndürür
     std::vector<std::string> getRuleNames() const;
+
+    // Kritik diagnostic bulunup bulunmadığını kontrol eder
+    bool hasCriticalDiagnostics(
+        const std::vector<Diagnostic>& diagnostics
+    ) const;
+
+    // Warning diagnostic bulunup bulunmadığını kontrol eder
+    bool hasWarningDiagnostics(
+        const std::vector<Diagnostic>& diagnostics
+    ) const;
+
+    // Toplam diagnostic sayısını döndürür
+    int countDiagnostics(
+        const std::vector<Diagnostic>& diagnostics
+    ) const;
 };
 
 #endif
