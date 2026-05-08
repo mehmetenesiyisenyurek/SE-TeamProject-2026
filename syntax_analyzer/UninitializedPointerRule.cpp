@@ -1,5 +1,8 @@
 #include "UninitializedPointerRule.h"
 
+//#include "../parser/ASTNode.h"
+//#include "../parser/ASTNodeType.h"
+
 /*
  * Kural ID'sini döndürür.
  */

@@ -1,5 +1,8 @@
 #include "SyntaxAnalyzer.h"
-//#include "Token.h"
+
+//#include "../lexer/Token.h"
+//#include "../parser/ASTNode.h"
+//#include "../parser/ASTNodeType.h"
 
 #include <stack>
 /*

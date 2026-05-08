@@ -1,5 +1,8 @@
 #include "UnusedVariableRule.h"
 
+//#include "../parser/ASTNode.h"
+//#include "../parser/ASTNodeType.h"
+
 /*
  * Geçerli değişken ismi olup olmadığını kontrol eder.
  */
