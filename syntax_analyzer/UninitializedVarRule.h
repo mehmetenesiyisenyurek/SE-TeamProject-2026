@@ -45,6 +45,12 @@ private:
         const ASTNode& node,
         std::vector<std::string>& usedVars
     ) const;
+
+    // Değişkenin başlatılıp başlatılmadığını kontrol eder
+    bool isVariableInitialized(
+        const std::string& variableName,
+        const std::vector<std::string>& initializedVars
+    ) const;
 };
 
 #endif

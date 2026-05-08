@@ -44,6 +44,28 @@ std::vector<Diagnostic> UninitializedVarRule::check(const ASTNode& ast) {
 
     collectUsedVars(ast, usedVars);
 
+    for (const std::string& usedVar : usedVars) {
+
+        if (!isVariableInitialized(
+                usedVar,
+                uninitializedVars
+            )) {
+
+            Diagnostic diagnostic(
+                1,
+                1,
+                "Variable '" + usedVar +
+                "' may be used before initialization",
+                getDefaultSeverity(),
+                "rule",
+                getId(),
+                usedVar
+            );
+
+            diagnostics.push_back(diagnostic);
+            }
+    }
+
     Diagnostic diagnostic(
         3,
         5,
@@ -77,4 +99,22 @@ void UninitializedVarRule::collectUsedVars(
     std::vector<std::string>& usedVars
 ) const {
 
+}
+
+/*
+ * Değişkenin başlatılıp başlatılmadığını kontrol eder.
+ */
+bool UninitializedVarRule::isVariableInitialized(
+    const std::string& variableName,
+    const std::vector<std::string>& initializedVars
+) const {
+
+    for (const std::string& initializedVar : initializedVars) {
+
+        if (initializedVar == variableName) {
+            return true;
+        }
+    }
+
+    return false;
 }
