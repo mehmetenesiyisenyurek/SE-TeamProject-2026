@@ -31,6 +31,20 @@ public:
 
     // AST üzerinde başlatılmamış değişken analizi yapar
     std::vector<Diagnostic> check(const ASTNode& ast) override;
+
+private:
+
+    // Başlatılmamış değişkenleri toplar
+    void collectUninitializedVars(
+        const ASTNode& node,
+        std::vector<std::string>& uninitializedVars
+    ) const;
+
+    // Kullanılan değişkenleri toplar
+    void collectUsedVars(
+        const ASTNode& node,
+        std::vector<std::string>& usedVars
+    ) const;
 };
 
 #endif

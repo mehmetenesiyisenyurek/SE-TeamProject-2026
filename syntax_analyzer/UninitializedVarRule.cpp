@@ -36,6 +36,14 @@ std::vector<Diagnostic> UninitializedVarRule::check(const ASTNode& ast) {
 
     std::vector<Diagnostic> diagnostics;
 
+    std::vector<std::string> uninitializedVars;
+
+    std::vector<std::string> usedVars;
+
+    collectUninitializedVars(ast, uninitializedVars);
+
+    collectUsedVars(ast, usedVars);
+
     Diagnostic diagnostic(
         3,
         5,
@@ -49,4 +57,24 @@ std::vector<Diagnostic> UninitializedVarRule::check(const ASTNode& ast) {
     diagnostics.push_back(diagnostic);
 
     return diagnostics;
+}
+
+/*
+ * Başlatılmamış değişkenleri toplar.
+ */
+void UninitializedVarRule::collectUninitializedVars(
+    const ASTNode& node,
+    std::vector<std::string>& uninitializedVars
+) const {
+
+}
+
+/*
+ * Kullanılan değişkenleri toplar.
+ */
+void UninitializedVarRule::collectUsedVars(
+    const ASTNode& node,
+    std::vector<std::string>& usedVars
+) const {
+
 }
