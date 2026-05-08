@@ -1,5 +1,30 @@
 #include "RuleEngine.h"
 
+#include "UnusedVariableRule.h"
+#include "UninitializedVarRule.h"
+#include "UninitializedPointerRule.h"
+
+/*
+ * RuleEngine oluşturulduğunda varsayılan analiz kurallarını ekler.
+ */
+RuleEngine::RuleEngine() {
+    registerDefaultRules();
+}
+
+/*
+ * Sistemin varsayılan kurallarını oluşturur ve RuleEngine'e kaydeder.
+ */
+void RuleEngine::registerDefaultRules() {
+    ownedRules.push_back(std::make_unique<UnusedVariableRule>());
+    rules.push_back(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<UninitializedVarRule>());
+    rules.push_back(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<UninitializedPointerRule>());
+    rules.push_back(ownedRules.back().get());
+}
+
 /*
  * Sisteme yeni bir analiz kuralı ekler.
  * Null pointer gelirse kural listeye eklenmez.
