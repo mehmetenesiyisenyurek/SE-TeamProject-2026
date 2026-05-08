@@ -18,21 +18,26 @@ void RuleEngine::registerDefaultRules() {
     clearRules();
 
     ownedRules.push_back(std::make_unique<UnusedVariableRule>());
-    rules.push_back(ownedRules.back().get());
+    addRule(ownedRules.back().get());
 
     ownedRules.push_back(std::make_unique<UninitializedVarRule>());
-    rules.push_back(ownedRules.back().get());
+    addRule(ownedRules.back().get());
 
     ownedRules.push_back(std::make_unique<UninitializedPointerRule>());
-    rules.push_back(ownedRules.back().get());
+    addRule(ownedRules.back().get());
 }
 
 /*
  * Sisteme yeni bir analiz kuralı ekler.
- * Null pointer gelirse kural listeye eklenmez.
+ * Null pointer veya aynı ID'ye sahip kural tekrar eklenmez.
  */
 void RuleEngine::addRule(IRule* rule) {
+
     if (rule == nullptr) {
+        return;
+    }
+
+    if (hasRule(rule->getId())) {
         return;
     }
 
