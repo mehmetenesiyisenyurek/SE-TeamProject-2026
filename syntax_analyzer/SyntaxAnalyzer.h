@@ -18,6 +18,14 @@ private:
     // Token listesi boşsa true döndürür
     bool isTokenListEmpty(const std::vector<Token>& tokens) const;
 
+    // Syntax diagnostic nesnesi oluşturur
+    Diagnostic createSyntaxDiagnostic(
+        int line,
+        int column,
+        const std::string& message,
+        DiagnosticSeverity severity
+    ) const;
+
 public:
 
     // AST ve token listesi üzerinden syntax analizi yapar
