@@ -23,6 +23,9 @@ public:
     // Kural adını döndürür
     std::string getName() const override;
 
+    // Kural açıklamasını döndürür
+    std::string getDescription() const override;
+
     // AST üzerinde başlatılmamış değişken analizi yapar
     std::vector<Diagnostic> check(const ASTNode& ast) override;
 };

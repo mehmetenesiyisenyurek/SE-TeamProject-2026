@@ -25,6 +25,9 @@ public:
     // Kural adını döndürür
     virtual std::string getName() const = 0;
 
+    // Kural açıklamasını döndürür
+    virtual std::string getDescription() const = 0;
+
     // AST üzerinde analiz yapar ve bulguları döndürür
     virtual std::vector<Diagnostic> check(const ASTNode& ast) = 0;
 };

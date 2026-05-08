@@ -15,6 +15,13 @@ std::string UnusedVariableRule::getName() const {
 }
 
 /*
+ * Kural açıklamasını döndürür.
+ */
+std::string UnusedVariableRule::getDescription() const {
+    return "Detects variables that are declared but never used.";
+}
+
+/*
  * Kullanılmayan değişken analizini yapar.
  * Şimdilik örnek diagnostic üretir.
  */

@@ -15,6 +15,13 @@ std::string UninitializedVarRule::getName() const {
 }
 
 /*
+ * Kural açıklamasını döndürür.
+ */
+std::string UninitializedVarRule::getDescription() const {
+    return "Detects variables used before initialization.";
+}
+
+/*
  * Başlatılmadan kullanılan değişkenleri analiz eder.
  * Şimdilik örnek diagnostic üretir.
  */

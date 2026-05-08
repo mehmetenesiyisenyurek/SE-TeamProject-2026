@@ -15,6 +15,13 @@ std::string UninitializedPointerRule::getName() const {
 }
 
 /*
+ * Kural açıklamasını döndürür.
+ */
+std::string UninitializedPointerRule::getDescription() const {
+    return "Detects uninitialized pointer usage.";
+}
+
+/*
  * Başlatılmamış pointer kullanımını analiz eder.
  * Şimdilik örnek diagnostic üretir.
  */
