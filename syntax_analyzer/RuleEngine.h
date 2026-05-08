@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 #include "IRule.h"
 #include "../infrastructure/Diagnostic.h"
@@ -56,6 +57,12 @@ public:
     int countWarningDiagnostics(
         const std::vector<Diagnostic>& diagnostics
     ) const;
+
+    // Verilen ID'ye sahip kuralın ekli olup olmadığını kontrol eder
+    bool hasRule(const std::string& ruleId) const;
+
+    // Verilen ID'ye sahip kuralı listeden kaldırır
+    bool removeRuleById(const std::string& ruleId);
 };
 
 #endif

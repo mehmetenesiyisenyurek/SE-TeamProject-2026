@@ -130,3 +130,42 @@ int RuleEngine::countWarningDiagnostics(
 
     return count;
 }
+
+/*
+ * Verilen ID'ye sahip kuralın ekli olup olmadığını kontrol eder.
+ */
+bool RuleEngine::hasRule(const std::string& ruleId) const {
+
+    for (const IRule* rule : rules) {
+
+        if (rule == nullptr) {
+            continue;
+        }
+
+        if (rule->getId() == ruleId) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/*
+ * Verilen ID'ye sahip kuralı listeden kaldırır.
+ */
+bool RuleEngine::removeRuleById(const std::string& ruleId) {
+
+    for (auto it = rules.begin(); it != rules.end(); ++it) {
+
+        if (*it == nullptr) {
+            continue;
+        }
+
+        if ((*it)->getId() == ruleId) {
+            rules.erase(it);
+            return true;
+        }
+    }
+
+    return false;
+}
