@@ -84,6 +84,9 @@ public:
     int countDiagnostics(
         const std::vector<Diagnostic>& diagnostics
     ) const;
+
+    // Verilen ID'ye sahip kuralı kaldırır
+    void removeRule(const std::string& ruleId);
 };
 
 #endif

@@ -242,3 +242,11 @@ int RuleEngine::countDiagnostics(
 
     return static_cast<int>(diagnostics.size());
 }
+
+/*
+ * Verilen ID'ye sahip kuralı kaldırır.
+ */
+void RuleEngine::removeRule(const std::string& ruleId) {
+
+    removeRuleById(ruleId);
+}
