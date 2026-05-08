@@ -1,5 +1,7 @@
 #include "SyntaxAnalyzer.h"
+//#include "Token.h"
 
+#include <stack>
 /*
  * AST ve token listesi üzerinde syntax analizi yapar.
  * Token listesi boşsa temel syntax hatası üretir.
@@ -107,6 +109,48 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
     std::vector<Diagnostic>& diagnostics
 ) {
 
+    /*
+    std::stack<Token> bracketStack;
+
+    for (const Token& token : tokens) {
+
+        if (token.getValue() == "{") {
+            bracketStack.push(token);
+        }
+        else if (token.getValue() == "}") {
+
+            if (bracketStack.empty()) {
+
+                Diagnostic diagnostic = createSyntaxDiagnostic(
+                    token.getLine(),
+                    token.getColumn(),
+                    "Unmatched closing bracket",
+                    DiagnosticSeverity::CRITICAL
+                );
+
+                diagnostics.push_back(diagnostic);
+            }
+            else {
+                bracketStack.pop();
+            }
+        }
+    }
+
+    while (!bracketStack.empty()) {
+
+        Token token = bracketStack.top();
+        bracketStack.pop();
+
+        Diagnostic diagnostic = createSyntaxDiagnostic(
+            token.getLine(),
+            token.getColumn(),
+            "Unmatched opening bracket",
+            DiagnosticSeverity::CRITICAL
+        );
+
+        diagnostics.push_back(diagnostic);
+    }
+    */
 }
 
 /*

@@ -44,6 +44,12 @@ private:
         const ASTNode& node,
         std::vector<std::string>& usedVars
     ) const;
+
+    // Değişkenin kullanılıp kullanılmadığını kontrol eder
+    bool isVariableUsed(
+        const std::string& variableName,
+        const std::vector<std::string>& usedVars
+    ) const;
 };
 
 #endif
