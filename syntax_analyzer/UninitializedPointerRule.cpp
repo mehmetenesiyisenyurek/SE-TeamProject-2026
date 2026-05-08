@@ -44,6 +44,25 @@ std::vector<Diagnostic> UninitializedPointerRule::check(const ASTNode& ast) {
 
     collectDereferencedPointers(ast, dereferencedPointers);
 
+    for (const std::string& pointer : dereferencedPointers) {
+
+        if (!isPointerInitialized(pointer, pointers)) {
+
+            Diagnostic diagnostic(
+                1,
+                1,
+                "Pointer '" + pointer +
+                "' may be dereferenced before initialization",
+                getDefaultSeverity(),
+                "rule",
+                getId(),
+                pointer
+            );
+
+            diagnostics.push_back(diagnostic);
+        }
+    }
+
     Diagnostic diagnostic(
         7,
         3,
@@ -77,4 +96,22 @@ void UninitializedPointerRule::collectDereferencedPointers(
     std::vector<std::string>& dereferencedPointers
 ) const {
 
+}
+
+/*
+ * Pointer'ın başlatılıp başlatılmadığını kontrol eder.
+ */
+bool UninitializedPointerRule::isPointerInitialized(
+    const std::string& pointerName,
+    const std::vector<std::string>& initializedPointers
+) const {
+
+    for (const std::string& pointer : initializedPointers) {
+
+        if (pointer == pointerName) {
+            return true;
+        }
+    }
+
+    return false;
 }

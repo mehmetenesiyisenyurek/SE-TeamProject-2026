@@ -45,6 +45,12 @@ private:
         const ASTNode& node,
         std::vector<std::string>& dereferencedPointers
     ) const;
+
+    // Pointer'ın başlatılıp başlatılmadığını kontrol eder
+    bool isPointerInitialized(
+        const std::string& pointerName,
+        const std::vector<std::string>& initializedPointers
+    ) const;
 };
 
 #endif
