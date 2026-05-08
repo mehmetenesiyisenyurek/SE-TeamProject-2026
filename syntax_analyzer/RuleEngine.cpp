@@ -174,3 +174,41 @@ bool RuleEngine::removeRuleById(const std::string& ruleId) {
 
     return false;
 }
+
+/*
+ * Sistemde kayıtlı tüm kural ID'lerini döndürür.
+ */
+std::vector<std::string> RuleEngine::getRuleIds() const {
+
+    std::vector<std::string> ruleIds;
+
+    for (const IRule* rule : rules) {
+
+        if (rule == nullptr) {
+            continue;
+        }
+
+        ruleIds.push_back(rule->getId());
+    }
+
+    return ruleIds;
+}
+
+/*
+ * Sistemde kayıtlı tüm kural isimlerini döndürür.
+ */
+std::vector<std::string> RuleEngine::getRuleNames() const {
+
+    std::vector<std::string> ruleNames;
+
+    for (const IRule* rule : rules) {
+
+        if (rule == nullptr) {
+            continue;
+        }
+
+        ruleNames.push_back(rule->getName());
+    }
+
+    return ruleNames;
+}

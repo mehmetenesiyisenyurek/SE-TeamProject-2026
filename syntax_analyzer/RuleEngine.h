@@ -63,6 +63,12 @@ public:
 
     // Verilen ID'ye sahip kuralı listeden kaldırır
     bool removeRuleById(const std::string& ruleId);
+
+    // Sistemde kayıtlı tüm kural ID'lerini döndürür
+    std::vector<std::string> getRuleIds() const;
+
+    // Sistemde kayıtlı tüm kural isimlerini döndürür
+    std::vector<std::string> getRuleNames() const;
 };
 
 #endif
