@@ -19,7 +19,11 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
 
     std::vector<Diagnostic> diagnostics;
 
+    /*
+     * Token listesi boşsa kritik syntax hatası üret.
+     */
     if (isTokenListEmpty(tokens)) {
+
         Diagnostic diagnostic(
             1,
             1,
@@ -31,6 +35,7 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
         );
 
         diagnostics.push_back(diagnostic);
+        return diagnostics;
     }
 
     return diagnostics;

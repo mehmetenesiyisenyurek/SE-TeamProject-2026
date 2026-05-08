@@ -82,3 +82,22 @@ void RuleEngine::clearRules() {
     rules.clear();
     ownedRules.clear();
 }
+
+/*
+ * Kritik seviyedeki diagnostic sayısını döndürür.
+ */
+int RuleEngine::countCriticalDiagnostics(
+    const std::vector<Diagnostic>& diagnostics
+) const {
+
+    int count = 0;
+
+    for (const Diagnostic& diagnostic : diagnostics) {
+
+        if (diagnostic.getSeverity() == DiagnosticSeverity::CRITICAL) {
+            count++;
+        }
+    }
+
+    return count;
+}

@@ -25,6 +25,11 @@ private:
     // Varsayılan kuralları sisteme ekler
     void registerDefaultRules();
 
+    // Kritik diagnostic sayısını döndürür
+    int countCriticalDiagnostics(
+        const std::vector<Diagnostic>& diagnostics
+    ) const;
+
 public:
 
     // RuleEngine oluşturulduğunda varsayılan kuralları hazırlar
