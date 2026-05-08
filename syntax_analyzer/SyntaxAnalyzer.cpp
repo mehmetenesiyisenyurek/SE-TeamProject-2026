@@ -26,11 +26,25 @@ Diagnostic SyntaxAnalyzer::createSyntaxDiagnostic(
         line,
         column,
         message,
-        severity,
-        "syntax",
+        determineSeverity(message),
+        getSyntaxSource(),
         "",
         ""
     );
+}
+
+/*
+ * Syntax hata mesajına göre severity belirler.
+ */
+DiagnosticSeverity SyntaxAnalyzer::determineSeverity(
+    const std::string& message
+) const {
+
+    if (message.empty()) {
+        return DiagnosticSeverity::WARNING;
+    }
+
+    return DiagnosticSeverity::CRITICAL;
 }
 
 std::vector<Diagnostic> SyntaxAnalyzer::analyze(
@@ -57,4 +71,11 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
     }
 
     return diagnostics;
+}
+
+/*
+ * Syntax diagnostic kaynağını döndürür.
+ */
+std::string SyntaxAnalyzer::getSyntaxSource() const {
+    return "syntax";
 }

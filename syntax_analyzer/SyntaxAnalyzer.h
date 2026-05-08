@@ -2,6 +2,7 @@
 #define SE_TEAMPROJECT_2026_SYNTAXANALYZER_H
 
 #include <vector>
+#include <string>
 
 #include "../infrastructure/Diagnostic.h"
 
@@ -25,6 +26,14 @@ private:
         const std::string& message,
         DiagnosticSeverity severity
     ) const;
+
+    // Syntax hata mesajına göre severity belirler
+    DiagnosticSeverity determineSeverity(
+        const std::string& message
+    ) const;
+
+    // Syntax diagnostic kaynağını döndürür
+    std::string getSyntaxSource() const;
 
 public:
 
