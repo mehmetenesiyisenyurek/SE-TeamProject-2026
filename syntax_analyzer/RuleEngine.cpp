@@ -15,6 +15,8 @@ RuleEngine::RuleEngine() {
  * Sistemin varsayılan kurallarını oluşturur ve RuleEngine'e kaydeder.
  */
 void RuleEngine::registerDefaultRules() {
+    clearRules();
+
     ownedRules.push_back(std::make_unique<UnusedVariableRule>());
     rules.push_back(ownedRules.back().get());
 
@@ -71,9 +73,12 @@ std::vector<Diagnostic> RuleEngine::analyzeAll(const ASTNode& ast) {
 int RuleEngine::getRuleCount() const {
     return static_cast<int>(rules.size());
 }
+
 /*
  * Sistemde kayıtlı tüm analiz kurallarını temizler.
  */
 void RuleEngine::clearRules() {
+
     rules.clear();
+    ownedRules.clear();
 }
