@@ -58,6 +58,38 @@ bool UseAfterFreeRule::isUsedAfterFree(
         int freeLine,
         ASTNode* scope
 ) {
+
+    if (scope == nullptr) {
+        return false;
+    }
+
+    // Sadece free sonrası satırlara bak
+    if (scope->line > freeLine) {
+
+        // Eğer ptr = NULL yapılmışsa güvenli kabul edilir
+        if (isNullAssignment(varName, scope)) {
+            return false;
+        }
+
+        // Aynı değişken tekrar kullanılmış mı?
+        if (scope->value == varName) {
+            return true;
+        }
+    }
+
+    // Alt düğümlerde de ara
+    for (ASTNode* child : scope->children) {
+
+        if (isUsedAfterFree(
+                varName,
+                freeLine,
+                child
+        )) {
+
+            return true;
+        }
+    }
+
     return false;
 }
 
@@ -65,5 +97,25 @@ bool UseAfterFreeRule::isNullAssignment(
         const string& varName,
         ASTNode* node
 ) {
+
+    if (node == nullptr) {
+        return false;
+    }
+
+    // ptr = ...
+    if (node->type == "ASSIGNMENT" &&
+        node->value == varName) {
+
+        // Sağ tarafta NULL var mı?
+        for (ASTNode* child : node->children) {
+
+            if (child != nullptr &&
+                child->type == "NULL_LITERAL") {
+
+                return true;
+            }
+        }
+    }
+
     return false;
 }
