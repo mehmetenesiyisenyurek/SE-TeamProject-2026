@@ -1,0 +1,18 @@
+#ifndef TOKEN_TYPE_H
+#define TOKEN_TYPE_H
+
+enum class TokenType
+{
+    KEYWORD,
+    IDENTIFIER,
+    INT_LITERAL,
+    FLOAT_LITERAL,
+    STRING_LITERAL,
+    CHAR_LITERAL,
+    OPERATOR,
+    PUNCTUATION,
+    PREPROCESSOR,
+    UNKNOWN
+};
+
+#endif
