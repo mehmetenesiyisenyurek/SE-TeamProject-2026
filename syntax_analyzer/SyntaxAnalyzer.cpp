@@ -60,15 +60,24 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
     if (isTokenListEmpty(tokens)) {
 
         Diagnostic diagnostic = createSyntaxDiagnostic(
-    1,
-    1,
-    "No tokens found for syntax analysis",
-    DiagnosticSeverity::CRITICAL
-);
+            1,
+            1,
+            "No tokens found for syntax analysis",
+            DiagnosticSeverity::CRITICAL
+        );
 
         diagnostics.push_back(diagnostic);
+
         return diagnostics;
     }
+
+    checkMissingSemicolon(ast, diagnostics);
+
+    checkUnmatchedBrackets(tokens, diagnostics);
+
+    checkUnmatchedParentheses(tokens, diagnostics);
+
+    checkInvalidDeclarations(ast, diagnostics);
 
     return diagnostics;
 }
@@ -78,4 +87,44 @@ std::vector<Diagnostic> SyntaxAnalyzer::analyze(
  */
 std::string SyntaxAnalyzer::getSyntaxSource() const {
     return "syntax";
+}
+
+/*
+ * Eksik noktalı virgül kontrolü yapar.
+ */
+void SyntaxAnalyzer::checkMissingSemicolon(
+    const ASTNode& node,
+    std::vector<Diagnostic>& diagnostics
+) {
+
+}
+
+/*
+ * Eşleşmeyen süslü parantezleri kontrol eder.
+ */
+void SyntaxAnalyzer::checkUnmatchedBrackets(
+    const std::vector<Token>& tokens,
+    std::vector<Diagnostic>& diagnostics
+) {
+
+}
+
+/*
+ * Eşleşmeyen parantezleri kontrol eder.
+ */
+void SyntaxAnalyzer::checkUnmatchedParentheses(
+    const std::vector<Token>& tokens,
+    std::vector<Diagnostic>& diagnostics
+) {
+
+}
+
+/*
+ * Geçersiz değişken tanımlarını kontrol eder.
+ */
+void SyntaxAnalyzer::checkInvalidDeclarations(
+    const ASTNode& node,
+    std::vector<Diagnostic>& diagnostics
+) {
+
 }
