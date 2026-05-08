@@ -46,7 +46,7 @@ std::vector<Diagnostic> UninitializedPointerRule::check(const ASTNode& ast) {
 
     for (const std::string& pointer : dereferencedPointers) {
 
-        if (!isPointerInitialized(pointer, pointers)) {
+        if (isPointerInitialized(pointer, pointers)) {
 
             Diagnostic diagnostic(
                 1,
@@ -62,18 +62,6 @@ std::vector<Diagnostic> UninitializedPointerRule::check(const ASTNode& ast) {
             diagnostics.push_back(diagnostic);
         }
     }
-
-    Diagnostic diagnostic(
-        7,
-        3,
-        "Uninitialized pointer detected",
-        DiagnosticSeverity::CRITICAL,
-        "rule",
-        "R012",
-        "int* ptr;"
-    );
-
-    diagnostics.push_back(diagnostic);
 
     return diagnostics;
 }

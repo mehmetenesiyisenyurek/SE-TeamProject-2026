@@ -46,10 +46,7 @@ std::vector<Diagnostic> UninitializedVarRule::check(const ASTNode& ast) {
 
     for (const std::string& usedVar : usedVars) {
 
-        if (!isVariableInitialized(
-                usedVar,
-                uninitializedVars
-            )) {
+        if (isVariableInitialized(usedVar, uninitializedVars)) {
 
             Diagnostic diagnostic(
                 1,
@@ -63,20 +60,8 @@ std::vector<Diagnostic> UninitializedVarRule::check(const ASTNode& ast) {
             );
 
             diagnostics.push_back(diagnostic);
-            }
+        }
     }
-
-    Diagnostic diagnostic(
-        3,
-        5,
-        "Variable used before initialization",
-        DiagnosticSeverity::CRITICAL,
-        "rule",
-        "R002",
-        "int x;"
-    );
-
-    diagnostics.push_back(diagnostic);
 
     return diagnostics;
 }

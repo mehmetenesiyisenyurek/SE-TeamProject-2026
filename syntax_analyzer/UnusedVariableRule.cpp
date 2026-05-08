@@ -74,18 +74,6 @@ std::vector<Diagnostic> UnusedVariableRule::check(const ASTNode& ast) {
         }
     }
 
-    Diagnostic diagnostic(
-        1,
-        1,
-        "Unused variable detected",
-        DiagnosticSeverity::WARNING,
-        "rule",
-        "R001",
-        "int temp;"
-    );
-
-    diagnostics.push_back(diagnostic);
-
     return diagnostics;
 }
 
