@@ -101,3 +101,32 @@ int RuleEngine::countCriticalDiagnostics(
 
     return count;
 }
+
+/*
+ * Diagnostic listesinde herhangi bir bulgu olup olmadığını kontrol eder.
+ */
+bool RuleEngine::hasDiagnostics(
+    const std::vector<Diagnostic>& diagnostics
+) const {
+
+    return !diagnostics.empty();
+}
+
+/*
+ * Warning seviyesindeki diagnostic sayısını döndürür.
+ */
+int RuleEngine::countWarningDiagnostics(
+    const std::vector<Diagnostic>& diagnostics
+) const {
+
+    int count = 0;
+
+    for (const Diagnostic& diagnostic : diagnostics) {
+
+        if (diagnostic.getSeverity() == DiagnosticSeverity::WARNING) {
+            count++;
+        }
+    }
+
+    return count;
+}

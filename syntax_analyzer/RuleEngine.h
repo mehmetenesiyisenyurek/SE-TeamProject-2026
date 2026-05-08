@@ -46,6 +46,16 @@ public:
 
     // Sistemdeki tüm kuralları temizler
     void clearRules();
+
+    // Diagnostic listesinde bulgu olup olmadığını kontrol eder
+    bool hasDiagnostics(
+        const std::vector<Diagnostic>& diagnostics
+    ) const;
+
+    // Warning seviyesindeki diagnostic sayısını döndürür
+    int countWarningDiagnostics(
+        const std::vector<Diagnostic>& diagnostics
+    ) const;
 };
 
 #endif
