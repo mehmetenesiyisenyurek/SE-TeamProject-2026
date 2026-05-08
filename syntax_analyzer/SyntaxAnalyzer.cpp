@@ -92,7 +92,9 @@ std::string SyntaxAnalyzer::getSyntaxSource() const {
 }
 
 /*
- * Eksik noktalı virgül kontrolü yapar.
+    * Eksik noktalı virgül kontrolü yapar.
+    * TODO: ASTNode tamamlandığında VARIABLE_DECL, RETURN_STMT,
+    * ASSIGNMENT ve FUNCTION_CALL düğümleri üzerinde ';' kontrolü yapılacak.
  */
 void SyntaxAnalyzer::checkMissingSemicolon(
     const ASTNode& node,
@@ -103,6 +105,8 @@ void SyntaxAnalyzer::checkMissingSemicolon(
 
 /*
  * Eşleşmeyen süslü parantezleri kontrol eder.
+ * TODO: Token sınıfı tamamlandığında stack kullanılarak '{' ve '}'
+ * eşleşmeleri kontrol edilecek.
  */
 void SyntaxAnalyzer::checkUnmatchedBrackets(
     const std::vector<Token>& tokens,
@@ -155,6 +159,8 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
 
 /*
  * Eşleşmeyen parantezleri kontrol eder.
+ * TODO: Token sınıfı tamamlandığında stack kullanılarak '(', ')',
+ * '[' ve ']' eşleşmeleri kontrol edilecek.
  */
 void SyntaxAnalyzer::checkUnmatchedParentheses(
     const std::vector<Token>& tokens,
@@ -165,6 +171,8 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
 
 /*
  * Geçersiz değişken tanımlarını kontrol eder.
+ * TODO: ASTNode tamamlandığında tip bilgisi olmayan veya hatalı
+ * VARIABLE_DECL düğümleri kontrol edilecek.
  */
 void SyntaxAnalyzer::checkInvalidDeclarations(
     const ASTNode& node,
