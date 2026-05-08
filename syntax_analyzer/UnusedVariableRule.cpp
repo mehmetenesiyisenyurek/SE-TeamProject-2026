@@ -96,9 +96,20 @@ void UnusedVariableRule::collectDeclaredVars(
     const ASTNode& node,
     std::vector<std::string>& declaredVars
 ) const {
+
     /*
-        * AST traversal tamamlandığında
-        * geçersiz boş değişken isimleri filtrelenecektir.
+    if (node.getType() == ASTNodeType::VARIABLE_DECL) {
+
+        std::string variableName = node.getValue();
+
+        if (!variableName.empty()) {
+            declaredVars.push_back(variableName);
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        collectDeclaredVars(child, declaredVars);
+    }
     */
 }
 
@@ -110,6 +121,20 @@ void UnusedVariableRule::collectUsedVars(
     std::vector<std::string>& usedVars
 ) const {
 
+    /*
+    if (node.getType() == ASTNodeType::IDENTIFIER) {
+
+        std::string variableName = node.getValue();
+
+        if (!variableName.empty()) {
+            usedVars.push_back(variableName);
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        collectUsedVars(child, usedVars);
+    }
+    */
 }
 
 /*

@@ -89,6 +89,20 @@ void UninitializedVarRule::collectUninitializedVars(
     std::vector<std::string>& uninitializedVars
 ) const {
 
+    /*
+    if (node.getType() == ASTNodeType::VARIABLE_DECL) {
+
+        std::string variableName = node.getValue();
+
+        if (!variableName.empty() && !node.hasInitializer()) {
+            uninitializedVars.push_back(variableName);
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        collectUninitializedVars(child, uninitializedVars);
+    }
+    */
 }
 
 /*
@@ -99,6 +113,20 @@ void UninitializedVarRule::collectUsedVars(
     std::vector<std::string>& usedVars
 ) const {
 
+    /*
+    if (node.getType() == ASTNodeType::IDENTIFIER) {
+
+        std::string variableName = node.getValue();
+
+        if (!variableName.empty()) {
+            usedVars.push_back(variableName);
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        collectUsedVars(child, usedVars);
+    }
+    */
 }
 
 /*

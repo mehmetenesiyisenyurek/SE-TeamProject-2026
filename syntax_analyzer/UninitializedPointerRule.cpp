@@ -86,6 +86,23 @@ void UninitializedPointerRule::collectUninitializedPointers(
     std::vector<std::string>& pointers
 ) const {
 
+    /*
+    if (node.getType() == ASTNodeType::VARIABLE_DECL) {
+
+        if (node.isPointerDeclaration() && !node.hasInitializer()) {
+
+            std::string pointerName = node.getValue();
+
+            if (!pointerName.empty()) {
+                pointers.push_back(pointerName);
+            }
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        collectUninitializedPointers(child, pointers);
+    }
+    */
 }
 
 /*
@@ -96,6 +113,23 @@ void UninitializedPointerRule::collectDereferencedPointers(
     std::vector<std::string>& dereferencedPointers
 ) const {
 
+    /*
+    if (node.getType() == ASTNodeType::EXPRESSION) {
+
+        if (node.isPointerDereference()) {
+
+            std::string pointerName = node.getValue();
+
+            if (!pointerName.empty()) {
+                dereferencedPointers.push_back(pointerName);
+            }
+        }
+    }
+
+    for (const ASTNode& child : node.getChildren()) {
+        collectDereferencedPointers(child, dereferencedPointers);
+    }
+    */
 }
 
 /*
