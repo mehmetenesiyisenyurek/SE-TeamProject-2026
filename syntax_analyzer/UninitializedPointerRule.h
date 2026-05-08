@@ -31,6 +31,20 @@ public:
 
     // AST üzerinde pointer analizi yapar
     std::vector<Diagnostic> check(const ASTNode& ast) override;
+
+private:
+
+    // Başlatılmamış pointerları toplar
+    void collectUninitializedPointers(
+        const ASTNode& node,
+        std::vector<std::string>& pointers
+    ) const;
+
+    // Pointer dereference kullanımını toplar
+    void collectDereferencedPointers(
+        const ASTNode& node,
+        std::vector<std::string>& dereferencedPointers
+    ) const;
 };
 
 #endif

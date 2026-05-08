@@ -36,6 +36,14 @@ std::vector<Diagnostic> UninitializedPointerRule::check(const ASTNode& ast) {
 
     std::vector<Diagnostic> diagnostics;
 
+    std::vector<std::string> pointers;
+
+    std::vector<std::string> dereferencedPointers;
+
+    collectUninitializedPointers(ast, pointers);
+
+    collectDereferencedPointers(ast, dereferencedPointers);
+
     Diagnostic diagnostic(
         7,
         3,
@@ -49,4 +57,24 @@ std::vector<Diagnostic> UninitializedPointerRule::check(const ASTNode& ast) {
     diagnostics.push_back(diagnostic);
 
     return diagnostics;
+}
+
+/*
+ * Başlatılmamış pointerları toplar.
+ */
+void UninitializedPointerRule::collectUninitializedPointers(
+    const ASTNode& node,
+    std::vector<std::string>& pointers
+) const {
+
+}
+
+/*
+ * Pointer dereference kullanımlarını toplar.
+ */
+void UninitializedPointerRule::collectDereferencedPointers(
+    const ASTNode& node,
+    std::vector<std::string>& dereferencedPointers
+) const {
+
 }
