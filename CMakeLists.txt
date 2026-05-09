@@ -21,5 +21,16 @@ add_executable("SE-TeamProject-2026" main.cpp
         infrastructure/CodeMetric.h
         infrastructure/ValidationResult.cpp
         infrastructure/ValidationResult.h
+        syntax_analyzer/IRule.h
+        syntax_analyzer/RuleEngine.h
+        syntax_analyzer/RuleEngine.cpp
+        syntax_analyzer/UnusedVariableRule.h
+        syntax_analyzer/UnusedVariableRule.cpp
+        syntax_analyzer/UninitializedVarRule.h
+        syntax_analyzer/UninitializedVarRule.cpp
+        syntax_analyzer/UninitializedPointerRule.h
+        syntax_analyzer/UninitializedPointerRule.cpp
+        syntax_analyzer/SyntaxAnalyzer.h
+        syntax_analyzer/SyntaxAnalyzer.cpp)
         infrastructure/Preprocessor.cpp
         infrastructure/Preprocessor.h)
