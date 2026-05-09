@@ -7,6 +7,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Alttaki boş project() komutunu sildik
 add_executable("SE-TeamProject-2026" main.cpp
+        parser/ASTNodeType.h
+        parser/ASTNode.cpp
+        parser/ASTNode.h
+        parser/Parser.cpp
+        parser/Parser.h)
         infrastructure/SourceFile.cpp
         infrastructure/SourceFile.h
         infrastructure/DiagnosticSeverity.h
@@ -27,3 +32,5 @@ add_executable("SE-TeamProject-2026" main.cpp
         syntax_analyzer/UninitializedPointerRule.cpp
         syntax_analyzer/SyntaxAnalyzer.h
         syntax_analyzer/SyntaxAnalyzer.cpp)
+        infrastructure/Preprocessor.cpp
+        infrastructure/Preprocessor.h)
