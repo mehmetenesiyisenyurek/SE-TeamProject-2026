@@ -9,4 +9,6 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable("SE-TeamProject-2026" main.cpp
         parser/ASTNodeType.h
         parser/ASTNode.cpp
-        parser/ASTNode.h)
+        parser/ASTNode.h
+        parser/Parser.cpp
+        parser/Parser.h)

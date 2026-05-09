@@ -70,7 +70,7 @@ std::string ASTNode::toString(int indent) const {
         oss << ")";
     }
     oss << "\n";
-    // Alt düğümleri recursive olarak yaz
+    // Alt düğümleri recursive olarak yazdırır
     for (const ASTNode* child : children) {
         oss << child->toString(indent + 1);
     }
