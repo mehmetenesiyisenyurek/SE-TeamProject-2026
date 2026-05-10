@@ -38,8 +38,15 @@ add_executable("SE-TeamProject-2026"
         syntax_analyzer/UninitializedPointerRule.cpp
         syntax_analyzer/SyntaxAnalyzer.h
         syntax_analyzer/SyntaxAnalyzer.cpp
-        # Görsellerde gördüğüm diğer eksik klasörleri de buraya eklemelisin:
-        # lexer/Lexer.cpp gibi...
+        # Lexer klasörü
+        lexer/Lexer.cpp
+        lexer/Lexer.h
+        lexer/Token.cpp
+        lexer/Token.h
+        lexer/TokenType.h
+        # Pointer kuralları
+        pointer/NullDereferenceRule.cpp
+        pointer/NullDereferenceRule.h
 )
 
 # HATAYI ÇÖZEN KRİTİK SATIR:
