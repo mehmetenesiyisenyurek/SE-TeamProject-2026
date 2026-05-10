@@ -17,7 +17,7 @@
 #include "syntax_analyzer/UnusedVariableRule.h"
 #include "pointer/NullDereferenceRule.h"
 // ============================================================
-//  DOSYA OKUMA (FileLoader yerine basit fonksiyon)
+//  DOSYA OKUMA
 // ============================================================
 std::string readFile(const std::string& path) {
     std::ifstream file(path);
@@ -30,7 +30,7 @@ std::string readFile(const std::string& path) {
     return buffer.str();
 }
 // ============================================================
-//  SONUÇLARI YAZDIRMA (TxtExporter yerine basit fonksiyon)
+//  SONUÇLARI YAZDIRMA
 // ============================================================
 void printResults(const std::string& fileName,
                   const std::vector<Diagnostic>& diagnostics,
@@ -114,18 +114,19 @@ int main(int argc, char* argv[]) {
     }
     // ---- ADIM 6: Syntax analizi ----
     SyntaxAnalyzer syntaxAnalyzer;
-    std::vector<Diagnostic> syntaxDiags = syntaxAnalyzer.analyze(ast, tokens);
+    std::vector<Diagnostic> syntaxDiags = syntaxAnalyzer.analyze(*ast, tokens);
     for (const auto& d : syntaxDiags) {
         allDiagnostics.push_back(d);
     }
     // ---- ADIM 7: Kural motoru ----
     RuleEngine ruleEngine;
     ruleEngine.addRule(new UnusedVariableRule());
-    ruleEngine.addRule(new NullDereferenceRule());
+    NullDereferenceRule nullDereferenceRule;
+    ruleEngine.addRule(&nullDereferenceRule);
     // Daha fazla kural eklenebilir:
     // ruleEngine.addRule(new MagicNumberRule());
     // ruleEngine.addRule(new UseAfterFreeRule());
-    std::vector<Diagnostic> ruleDiags = ruleEngine.analyzeAll(ast);
+    std::vector<Diagnostic> ruleDiags = ruleEngine.analyzeAll(*ast);
     for (const auto& d : ruleDiags) {
         allDiagnostics.push_back(d);
     }
