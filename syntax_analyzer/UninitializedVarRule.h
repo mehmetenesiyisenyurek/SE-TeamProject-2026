@@ -11,7 +11,7 @@ class ASTNode;
 
 /*
  * UninitializedVarRule:
- * Başlatılmadan kullanılan değişkenleri tespit eder.
+ * Tanımlanmış fakat başlatılmadan kullanılan değişkenleri tespit eder.
  * Kural ID: R002
  */
 class UninitializedVarRule : public IRule {
@@ -31,7 +31,7 @@ public:
 
 private:
 
-    // Başlatılmamış değişkenleri toplar
+    // Başlatılmadan tanımlanan değişkenleri toplar
     void collectUninitializedVars(
         const ASTNode& node,
         std::vector<std::string>& uninitializedVars
@@ -43,10 +43,10 @@ private:
         std::vector<std::string>& usedVars
     ) const;
 
-    // Değişkenin başlatılmamış değişkenler listesinde olup olmadığını kontrol eder
+    // Değişkenin başlatılmamış değişken listesinde olup olmadığını kontrol eder
     bool isVariableInitialized(
         const std::string& variableName,
-        const std::vector<std::string>& initializedVars
+        const std::vector<std::string>& uninitializedVars
     ) const;
 };
 

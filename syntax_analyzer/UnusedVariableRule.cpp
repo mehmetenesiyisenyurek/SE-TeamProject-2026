@@ -1,14 +1,21 @@
 #include "UnusedVariableRule.h"
 
-//#include "../parser/ASTNode.h"
-//#include "../parser/ASTNodeType.h"
+#include "../parser/ASTNode.h"
+#include "../parser/ASTNodeType.h"
 
 /*
  * Geçerli değişken ismi olup olmadığını kontrol eder.
  */
-static bool isValidVariableName(const std::string& variableName) {
+static bool isValidName(const std::string& name) {
+    if (name.empty()) {
+        return false;
+    }
 
-    return !variableName.empty();
+    if (name == "NULL" || name == "nullptr") {
+        return false;
+    }
+
+    return true;
 }
 
 /*
@@ -33,40 +40,27 @@ DiagnosticSeverity UnusedVariableRule::getDefaultSeverity() const {
 }
 
 /*
- * Kullanılmayan değişken analizini yapar.
- * Şimdilik örnek diagnostic üretir.
+ * AST üzerinde kullanılmayan değişken analizi yapar.
  */
 std::vector<Diagnostic> UnusedVariableRule::check(const ASTNode& ast) {
-
     std::vector<Diagnostic> diagnostics;
-
     std::vector<std::string> declaredVars;
-
     std::vector<std::string> usedVars;
 
     collectDeclaredVars(ast, declaredVars);
-
     collectUsedVars(ast, usedVars);
 
     for (const std::string& declaredVar : declaredVars) {
-
-        if (!isValidVariableName(declaredVar)) {
-            continue;
-        }
-
         if (!isVariableUsed(declaredVar, usedVars)) {
-
-            Diagnostic diagnostic(
+            diagnostics.emplace_back(
                 1,
                 1,
-                "Değişken '" + declaredVar + "' tanımlanmış ancak hiç kullanılmamış.",
+                "Degisken '" + declaredVar + "' tanimlanmis fakat kullanilmamis.",
                 getDefaultSeverity(),
                 "rule",
                 getId(),
                 declaredVar
             );
-
-            diagnostics.push_back(diagnostic);
         }
     }
 
@@ -80,23 +74,19 @@ void UnusedVariableRule::collectDeclaredVars(
     const ASTNode& node,
     std::vector<std::string>& declaredVars
 ) const {
-
-    /*
     if (node.getType() == ASTNodeType::VARIABLE_DECL) {
-
         std::string variableName = node.getValue();
 
-        if (!variableName.empty()) {
+        if (isValidName(variableName)) {
             declaredVars.push_back(variableName);
         }
     }
 
     for (const ASTNode* child : node.getChildren()) {
-    if (child != nullptr) {
-        collectDeclaredVars(*child, declaredVars);
+        if (child != nullptr) {
+            collectDeclaredVars(*child, declaredVars);
+        }
     }
-}
-    */
 }
 
 /*
@@ -106,18 +96,15 @@ void UnusedVariableRule::collectUsedVars(
     const ASTNode& node,
     std::vector<std::string>& usedVars
 ) const {
-
-    /*
-    if (
-        node.getType() == ASTNodeType::EXPRESSION ||
+    if (node.getType() == ASTNodeType::EXPRESSION ||
         node.getType() == ASTNodeType::ASSIGNMENT ||
         node.getType() == ASTNodeType::BINARY_OP ||
-        node.getType() == ASTNodeType::FUNCTION_CALL
-    ) {
+        node.getType() == ASTNodeType::FUNCTION_CALL ||
+        node.getType() == ASTNodeType::RETURN_STMT) {
 
         std::string variableName = node.getValue();
 
-        if (!variableName.empty()) {
+        if (isValidName(variableName)) {
             usedVars.push_back(variableName);
         }
     }
@@ -127,19 +114,16 @@ void UnusedVariableRule::collectUsedVars(
             collectUsedVars(*child, usedVars);
         }
     }
-    */
 }
 
 /*
- * Değişkenin kullanılan değişkenler listesinde olup olmadığını kontrol eder.
+ * Değişkenin kullanılıp kullanılmadığını kontrol eder.
  */
 bool UnusedVariableRule::isVariableUsed(
     const std::string& variableName,
     const std::vector<std::string>& usedVars
 ) const {
-
     for (const std::string& usedVar : usedVars) {
-
         if (usedVar == variableName) {
             return true;
         }

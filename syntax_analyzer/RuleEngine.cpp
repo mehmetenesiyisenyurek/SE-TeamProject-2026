@@ -3,6 +3,7 @@
 #include "UnusedVariableRule.h"
 #include "UninitializedVarRule.h"
 #include "UninitializedPointerRule.h"
+#include "../pointer/UseAfterFreeRule.h"
 
 /*
  * RuleEngine oluşturulduğunda bu modüle ait varsayılan analiz kurallarını ekler.
@@ -24,6 +25,9 @@ void RuleEngine::registerDefaultRules() {
     addRule(ownedRules.back().get());
 
     ownedRules.push_back(std::make_unique<UninitializedPointerRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<UseAfterFreeRule>());
     addRule(ownedRules.back().get());
 }
 

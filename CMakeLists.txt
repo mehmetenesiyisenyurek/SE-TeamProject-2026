@@ -47,6 +47,8 @@ add_executable("SE-TeamProject-2026"
         # Pointer kuralları
         pointer/NullDereferenceRule.cpp
         pointer/NullDereferenceRule.h
+        pointer/UseAfterFreeRule.cpp
+        pointer/UseAfterFreeRule.h
 )
 
 # HATAYI ÇÖZEN KRİTİK SATIR:
