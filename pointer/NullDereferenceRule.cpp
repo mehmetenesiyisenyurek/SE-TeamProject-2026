@@ -1,149 +1,115 @@
 #include "NullDereferenceRule.h"
 
-vector<Diagnostic>
-NullDereferenceRule::check(ASTNode* ast) {
+// DEĞİŞTİ: IRule arayüzü için kural ID'si eklendi.
+std::string NullDereferenceRule::getId() const {
+    return "R007";
+}
 
-    // Üretilecek warning mesajları
-    vector<Diagnostic> diagnostics;
+// DEĞİŞTİ: IRule arayüzü için kural adı eklendi.
+std::string NullDereferenceRule::getName() const {
+    return "Null Dereference Rule";
+}
 
-    // AST boşsa çık
-    if (ast == nullptr) {
-        return diagnostics;
-    }
+// DEĞİŞTİ: DiagnosticSeverity enum'u kullanılarak varsayılan seviye eklendi.
+DiagnosticSeverity NullDereferenceRule::getDefaultSeverity() const {
+    return DiagnosticSeverity::WARNING;
+}
 
-    // Sadece fonksiyon içinde analiz yap
-    if (ast->type == "FUNCTION_DEF") {
+// DEĞİŞTİ: RuleEngine'in beklediği check(const ASTNode& ast) yapısına uyarlandı.
+std::vector<Diagnostic> NullDereferenceRule::check(const ASTNode& ast) {
+    std::vector<Diagnostic> diagnostics;
 
-        // malloc yapılan değişkenleri bul
-        vector<pair<string, int>>
-                mallocAssignments =
-                findMallocAssignments(ast);
+    if (ast.getType() == ASTNodeType::FUNCTION_DEF) {
+        auto mallocAssignments = findMallocAssignments(ast);
 
-        // Her malloc için NULL kontrolü var mı bak
         for (const auto& assignment : mallocAssignments) {
-
-            string variableName = assignment.first;
-
+            const std::string& variableName = assignment.first;
             int lineNumber = assignment.second;
 
-            // NULL kontrolü yoksa warning üret
-            if (!hasNullCheck(variableName, ast)) {
+            if (!variableName.empty() && !hasNullCheck(variableName, ast)) {
 
+                // DEĞİŞTİ: Diagnostic nesnesi projenin ortak Diagnostic constructor'ına göre oluşturuldu.
                 diagnostics.emplace_back(
-                        "R007",
-                        "malloc/calloc/realloc sonrasi NULL kontrolu yapilmamis: "
-                        + variableName,
-                        lineNumber
+                    lineNumber,
+                    1,
+                    "malloc/calloc/realloc sonrasi NULL kontrolu yapilmamis: " + variableName,
+                    getDefaultSeverity(),
+                    "rule",
+                    getId(),
+                    variableName
                 );
             }
         }
     }
 
-    // Alt AST düğümlerini recursive tara
-    for (ASTNode* child : ast->children) {
+    // DEĞİŞTİ: AST çocukları const ASTNode& yapısına uygun şekilde recursive kontrol ediliyor.
+    for (const ASTNode* child : ast.getChildren()) {
+        if (child == nullptr) {
+            continue;
+        }
 
-        vector<Diagnostic> childDiagnostics =
-                check(child);
-
-        diagnostics.insert(
-                diagnostics.end(),
-                childDiagnostics.begin(),
-                childDiagnostics.end()
-        );
+        auto childDiagnostics = check(*child);
+        diagnostics.insert(diagnostics.end(), childDiagnostics.begin(), childDiagnostics.end());
     }
 
     return diagnostics;
 }
 
-vector<pair<string, int>>
-NullDereferenceRule::findMallocAssignments(ASTNode* node) {
+// DEĞİŞTİ: malloc/calloc/realloc atamalarını AST üzerinden bulmak için yardımcı fonksiyon eklendi.
+std::vector<std::pair<std::string, int>> NullDereferenceRule::findMallocAssignments(const ASTNode& node) const {
+    std::vector<std::pair<std::string, int>> mallocAssignments;
 
-    // malloc yapılan değişkenler burada tutulur
-    vector<pair<string, int>> mallocAssignments;
-
-    if (node == nullptr) {
-        return mallocAssignments;
+    if ((node.getType() == ASTNodeType::VARIABLE_DECL || node.getType() == ASTNodeType::ASSIGNMENT) &&
+        containsAllocationCall(node)) {
+        mallocAssignments.emplace_back(node.getValue(), node.getLine());
     }
 
-    // Değişken tanımı veya assignment mı?
-    if (node->type == "VARIABLE_DECL" ||
-        node->type == "ASSIGNMENT") {
-
-        bool containsMallocCall = false;
-
-        // Alt düğümlerde malloc/calloc/realloc ara
-        for (ASTNode* child : node->children) {
-
-            if (child != nullptr &&
-                child->type == "CALL_EXPR" &&
-
-                (
-                        child->value == "malloc" ||
-                        child->value == "calloc" ||
-                        child->value == "realloc"
-                )) {
-
-                containsMallocCall = true;
-                break;
-            }
+    for (const ASTNode* child : node.getChildren()) {
+        if (child == nullptr) {
+            continue;
         }
 
-        // Allocation bulunduysa listeye ekle
-        if (containsMallocCall) {
-
-            mallocAssignments.emplace_back(
-                    node->value,
-                    node->line
-            );
-        }
-    }
-
-    // Alt düğümlerde de ara
-    for (ASTNode* child : node->children) {
-
-        vector<pair<string, int>> childResults =
-                findMallocAssignments(child);
-
-        mallocAssignments.insert(
-                mallocAssignments.end(),
-                childResults.begin(),
-                childResults.end()
-        );
+        auto childResults = findMallocAssignments(*child);
+        mallocAssignments.insert(mallocAssignments.end(), childResults.begin(), childResults.end());
     }
 
     return mallocAssignments;
 }
 
-bool NullDereferenceRule::hasNullCheck(
-        const string& varName,
-        ASTNode* scope
-) {
-
-    if (scope == nullptr) {
-        return false;
+// DEĞİŞTİ: AST içinde malloc/calloc/realloc çağrısı olup olmadığını kontrol eden yardımcı fonksiyon eklendi.
+bool NullDereferenceRule::containsAllocationCall(const ASTNode& node) const {
+    if (node.getType() == ASTNodeType::FUNCTION_CALL &&
+        (node.getValue() == "malloc" || node.getValue() == "calloc" || node.getValue() == "realloc")) {
+        return true;
     }
 
-    // IF bloğu mu kontrol et
-    if (scope->type == "IF") {
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr && containsAllocationCall(*child)) {
+            return true;
+        }
+    }
 
-        for (ASTNode* child : scope->children) {
+    return false;
+}
 
-            // ptr == NULL veya ptr != NULL kontrolü
-            if (child != nullptr &&
-                child->type == "BINARY_EXPR" &&
-                child->value == varName &&
+// DEĞİŞTİ: malloc sonrası değişken için NULL kontrolü var mı diye bakan yardımcı fonksiyon eklendi.
+bool NullDereferenceRule::hasNullCheck(const std::string& varName, const ASTNode& scope) const {
+    if (scope.getType() == ASTNodeType::IF_STATEMENT) {
+        const std::vector<ASTNode*>& children = scope.getChildren();
 
-                (
-                        child->operatorSymbol == "==" ||
-                        child->operatorSymbol == "!="
-                )) {
+        // Parser'da if dugumunun ilk child'i kosul ifadesidir.
+        if (!children.empty() && children[0] != nullptr) {
+            const ASTNode& condition = *children[0];
 
-                // Sağ tarafta NULL var mı?
-                for (ASTNode* exprChild : child->children) {
+            if (condition.getType() == ASTNodeType::BINARY_OP &&
+                (condition.getValue() == "==" || condition.getValue() == "!=")) {
 
-                    if (exprChild != nullptr &&
-                        exprChild->type == "NULL_LITERAL") {
+                const auto& conditionChildren = condition.getChildren();
+                if (conditionChildren.size() >= 2 && conditionChildren[0] != nullptr && conditionChildren[1] != nullptr) {
+                    const std::string& left = conditionChildren[0]->getValue();
+                    const std::string& right = conditionChildren[1]->getValue();
 
+                    if ((left == varName && right == "NULL") || (left == "NULL" && right == varName)) {
                         return true;
                     }
                 }
@@ -151,10 +117,8 @@ bool NullDereferenceRule::hasNullCheck(
         }
     }
 
-    // Alt düğümlerde de NULL kontrolü ara
-    for (ASTNode* child : scope->children) {
-
-        if (hasNullCheck(varName, child)) {
+    for (const ASTNode* child : scope.getChildren()) {
+        if (child != nullptr && hasNullCheck(varName, *child)) {
             return true;
         }
     }
