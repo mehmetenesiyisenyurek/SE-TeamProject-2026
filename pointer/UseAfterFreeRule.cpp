@@ -1,144 +1,89 @@
 #include "UseAfterFreeRule.h"
 
-vector<Diagnostic>
-UseAfterFreeRule::check(ASTNode* ast) {
+std::string UseAfterFreeRule::getId() const {
+    return "R008";
+}
 
-    // Üretilecek diagnostic mesajları
-    vector<Diagnostic> diagnostics;
+std::string UseAfterFreeRule::getName() const {
+    return "Use After Free Rule";
+}
 
-    // AST boşsa çık
-    if (ast == nullptr) {
-        return diagnostics;
-    }
+DiagnosticSeverity UseAfterFreeRule::getDefaultSeverity() const {
+    return DiagnosticSeverity::CRITICAL;
+}
 
-    // Sadece fonksiyon içinde analiz yap
-    if (ast->type == "FUNCTION_DEF") {
+std::vector<Diagnostic> UseAfterFreeRule::check(const ASTNode& ast) {
+    std::vector<Diagnostic> diagnostics;
 
-        // Tüm free(ptr) çağrılarını bul
-        vector<pair<string, int>> freeCalls =
-                findFreeCallSites(ast);
+    if (ast.getType() == ASTNodeType::FUNCTION_DEF) {
+        std::vector<std::pair<std::string, int>> freeCalls = findFreeCallSites(ast);
 
-        // Her free çağrısını kontrol et
         for (const auto& freeCall : freeCalls) {
-
-            string variableName = freeCall.first;
-
+            const std::string& variableName = freeCall.first;
             int freeLine = freeCall.second;
 
-            // free sonrası tekrar kullanım var mı?
-            if (isUsedAfterFree(
-                    variableName,
-                    freeLine,
-                    ast
-            )) {
-
+            if (!variableName.empty() && isUsedAfterFree(variableName, freeLine, ast)) {
                 diagnostics.emplace_back(
-                        "R008",
-                        "free edildikten sonra pointer tekrar kullaniliyor: "
-                        + variableName,
-                        freeLine
+                    freeLine,
+                    1,
+                    "free edildikten sonra pointer tekrar kullaniliyor: " + variableName,
+                    getDefaultSeverity(),
+                    "rule",
+                    getId(),
+                    variableName
                 );
             }
         }
     }
 
-    // Alt AST düğümlerini recursive tara
-    for (ASTNode* child : ast->children) {
-
-        vector<Diagnostic> childDiagnostics =
-                check(child);
-
-        diagnostics.insert(
-                diagnostics.end(),
-                childDiagnostics.begin(),
-                childDiagnostics.end()
-        );
+    for (const ASTNode* child : ast.getChildren()) {
+        if (child != nullptr) {
+            std::vector<Diagnostic> childDiagnostics = check(*child);
+            diagnostics.insert(diagnostics.end(), childDiagnostics.begin(), childDiagnostics.end());
+        }
     }
 
     return diagnostics;
 }
 
-vector<pair<string, int>>
-UseAfterFreeRule::findFreeCallSites(ASTNode* node) {
+std::vector<std::pair<std::string, int>> UseAfterFreeRule::findFreeCallSites(const ASTNode& node) const {
+    std::vector<std::pair<std::string, int>> freeCalls;
 
-        // free çağrıları burada tutulur
-        vector<pair<string, int>> freeCalls;
+    if (node.getType() == ASTNodeType::FUNCTION_CALL && node.getValue() == "free") {
+        const std::vector<ASTNode*>& children = node.getChildren();
 
-        if (node == nullptr) {
-            return freeCalls;
+        if (!children.empty() && children[0] != nullptr) {
+            freeCalls.emplace_back(children[0]->getValue(), node.getLine());
         }
-
-        // free(...) çağrısı mı kontrol et
-        if (node->type == "CALL_EXPR" &&
-            node->value == "free") {
-
-            // free(ptr) parametresi var mı?
-            if (!node->children.empty() &&
-                node->children[0] != nullptr) {
-
-                string variableName =
-                        node->children[0]->value;
-
-                int lineNumber = node->line;
-
-                // Pointer adı ve satırı kaydet
-                freeCalls.emplace_back(
-                        variableName,
-                        lineNumber
-                );
-                }
-            }
-
-        // Alt düğümlerde de free ara
-        for (ASTNode* child : node->children) {
-
-            vector<pair<string, int>> childResults =
-                    findFreeCallSites(child);
-
-            freeCalls.insert(
-                    freeCalls.end(),
-                    childResults.begin(),
-                    childResults.end()
-            );
-        }
-
-        return freeCalls;
     }
 
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            std::vector<std::pair<std::string, int>> childResults = findFreeCallSites(*child);
+            freeCalls.insert(freeCalls.end(), childResults.begin(), childResults.end());
+        }
+    }
+
+    return freeCalls;
+}
 
 bool UseAfterFreeRule::isUsedAfterFree(
-        const string& varName,
-        int freeLine,
-        ASTNode* scope
-) {
-
-    if (scope == nullptr) {
-        return false;
-    }
-
-    // Sadece free sonrası satırlara bak
-    if (scope->line > freeLine) {
-
-        // Eğer ptr = NULL yapılmışsa güvenli kabul edilir
+    const std::string& varName,
+    int freeLine,
+    const ASTNode& scope
+) const {
+    if (scope.getLine() > freeLine) {
         if (isNullAssignment(varName, scope)) {
             return false;
         }
 
-        // Aynı değişken tekrar kullanılmış mı?
-        if (scope->value == varName) {
+        if (scope.getValue() == varName) {
             return true;
         }
     }
 
-    // Alt düğümlerde de ara
-    for (ASTNode* child : scope->children) {
-
-        if (isUsedAfterFree(
-                varName,
-                freeLine,
-                child
-        )) {
-
+    for (const ASTNode* child : scope.getChildren()) {
+        if (child != nullptr && isUsedAfterFree(varName, freeLine, *child)) {
             return true;
         }
     }
@@ -146,25 +91,10 @@ bool UseAfterFreeRule::isUsedAfterFree(
     return false;
 }
 
-bool UseAfterFreeRule::isNullAssignment(
-        const string& varName,
-        ASTNode* node
-) {
-
-    if (node == nullptr) {
-        return false;
-    }
-
-    // ptr = ...
-    if (node->type == "ASSIGNMENT" &&
-        node->value == varName) {
-
-        // Sağ tarafta NULL var mı?
-        for (ASTNode* child : node->children) {
-
-            if (child != nullptr &&
-                child->type == "NULL_LITERAL") {
-
+bool UseAfterFreeRule::isNullAssignment(const std::string& varName, const ASTNode& node) const {
+    if (node.getType() == ASTNodeType::ASSIGNMENT && node.getValue() == varName) {
+        for (const ASTNode* child : node.getChildren()) {
+            if (child != nullptr && child->getValue() == "NULL") {
                 return true;
             }
         }
