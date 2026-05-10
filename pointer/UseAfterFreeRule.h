@@ -1,40 +1,28 @@
 #ifndef USE_AFTER_FREE_RULE_H
 #define USE_AFTER_FREE_RULE_H
 
-#include "NullDereferenceRule.h"
-
 #include <string>
 #include <vector>
 #include <utility>
 
-using namespace std;
+#include "../syntax_analyzer/IRule.h"
+#include "../parser/ASTNode.h"
+#include "../parser/ASTNodeType.h"
+#include "../infrastructure/Diagnostic.h"
+#include "../infrastructure/DiagnosticSeverity.h"
 
-// free sonrası pointer tekrar kullanılmış mı kontrol eder
-class UseAfterFreeRule {
-
+// free(ptr) çağrısından sonra aynı pointer tekrar kullanılmış mı kontrol eder.
+class UseAfterFreeRule : public IRule {
 public:
-
-    // Ana kontrol fonksiyonu
-    vector<Diagnostic> check(ASTNode* ast);
+    std::string getId() const override;
+    std::string getName() const override;
+    DiagnosticSeverity getDefaultSeverity() const override;
+    std::vector<Diagnostic> check(const ASTNode& ast) override;
 
 private:
-
-    // AST içinde free(ptr) çağrılarını toplar
-    vector<pair<string, int>>
-    findFreeCallSites(ASTNode* node);
-
-    // free sonrası aynı pointer tekrar kullanılmış mı kontrol eder
-    bool isUsedAfterFree(
-            const string& varName,
-            int freeLine,
-            ASTNode* scope
-    );
-
-    // ptr = NULL atanmış mı kontrol eder
-    bool isNullAssignment(
-            const string& varName,
-            ASTNode* node
-    );
+    std::vector<std::pair<std::string, int>> findFreeCallSites(const ASTNode& node) const;
+    bool isUsedAfterFree(const std::string& varName, int freeLine, const ASTNode& scope) const;
+    bool isNullAssignment(const std::string& varName, const ASTNode& node) const;
 };
 
 #endif
