@@ -5,72 +5,64 @@
 #include <vector>
 #include <utility>
 
-using namespace std;
+// DEĞİŞTİ:
+// NullDereferenceRule artık proje içerisindeki ortak IRule arayüzünü kullanıyor.
+#include "../syntax_analyzer/IRule.h"
 
-// AST düğüm yapısı
-struct ASTNode {
+// DEĞİŞTİ:
+// Kendi ASTNode tanımı kaldırıldı.
+// Ortak parser AST yapısı kullanılmaya başlandı.
+#include "../parser/ASTNode.h"
 
-    // Düğüm tipi
-    // Örn: FUNCTION_DEF, VARIABLE_DECL, CALL_EXPR
-    string type;
+#include "../parser/ASTNodeType.h"
 
-    // Düğüm değeri
-    // Örn: değişken adı veya fonksiyon adı
-    string value;
+// DEĞİŞTİ:
+// Kendi Diagnostic yapısı kaldırıldı.
+// Ortak Diagnostic sistemi kullanılmaya başlandı.
+#include "../infrastructure/Diagnostic.h"
 
-    // Operatör bilgisi
-    // Örn: == , !=
-    string operatorSymbol;
+#include "../infrastructure/DiagnosticSeverity.h"
 
-    // Kod satır numarası
-    int line = 0;
+// malloc/calloc/realloc sonrasinda
+// NULL kontrolu yapilip yapilmadigini kontrol eder.
 
-    // Alt AST düğümleri
-    vector<ASTNode*> children;
-};
-
-// Diagnostic mesaj yapısı
-struct Diagnostic {
-
-    // Rule kodu
-    // Örn: R007
-    string ruleCode;
-
-    // Kullanıcıya gösterilecek mesaj
-    string message;
-
-    // Hatanın bulunduğu satır
-    int line;
-
-    Diagnostic(
-            string ruleCode,
-            string message,
-            int line
-    )
-            : ruleCode(ruleCode),
-              message(message),
-              line(line) {}
-};
-
-// malloc sonrası NULL kontrolü yapılmış mı kontrol eder
-class NullDereferenceRule {
+// DEĞİŞTİ:
+// Class artık RuleEngine ile uyumlu olması için
+// IRule sınıfından türetildi.
+class NullDereferenceRule : public IRule {
 
 public:
 
-    // Ana kontrol fonksiyonu
-    vector<Diagnostic> check(ASTNode* ast);
+    // DEĞİŞTİ:
+    // Rule ID'si eklendi.
+    // (R007 -> NULL dereference kontrolü)
+    std::string getId() const override;
+
+    // DEĞİŞTİ:
+    // Kural adı eklendi.
+    std::string getName() const override;
+
+    // DEĞİŞTİ:
+    // Varsayılan diagnostic severity seviyesi tanımlandı.
+    DiagnosticSeverity getDefaultSeverity() const override;
+
+    // DEĞİŞTİ:
+    // RuleEngine standardına uygun hale getirildi.
+    // ASTNode* yerine const ASTNode& kullanılmaya başlandı.
+    std::vector<Diagnostic> check(const ASTNode& ast) override;
 
 private:
 
-    // malloc/calloc/realloc atamalarını bulur
-    vector<pair<string, int>>
-    findMallocAssignments(ASTNode* node);
+    // malloc/calloc/realloc atamalarını AST üzerinde bulur.
+    std::vector<std::pair<std::string, int>>
+    findMallocAssignments(const ASTNode& node) const;
 
-    // if(ptr == NULL) benzeri kontrol var mı bakar
-    bool hasNullCheck(
-            const string& varName,
-            ASTNode* scope
-    );
+    // İlgili pointer değişkeni için NULL kontrolü yapılıp yapılmadığını kontrol eder.
+    bool hasNullCheck(const std::string& varName,
+                      const ASTNode& scope) const;
+
+    // AST içerisinde malloc/calloc/realloc çağrısı var mı kontrol eder.
+    bool containsAllocationCall(const ASTNode& node) const;
 };
 
 #endif
