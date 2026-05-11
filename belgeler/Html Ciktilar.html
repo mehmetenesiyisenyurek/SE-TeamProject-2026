@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<!-- saved from url=(0088)file:///C:/Users/ASUS/Desktop/SE-TeamProject-2026/cmake-build-debug/analysis_report.html -->
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>CodeSentinel Analiz Raporu</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f6f8;margin:0;color:#1f2937;}
+.container{max-width:1400px;margin:0 auto;padding:24px;}
+.header{background:#111827;color:white;border-radius:14px;padding:24px;margin-bottom:20px;}
+.header h1{margin:0 0 10px 0;font-size:28px;}
+.summary{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;}
+.summary-card{background:white;color:#111827;border-radius:10px;padding:12px 16px;min-width:130px;}
+.summary-card strong{display:block;font-size:22px;}
+.file-card{background:white;border-radius:14px;margin-bottom:26px;box-shadow:0 4px 14px rgba(0,0,0,.08);overflow:hidden;}
+.file-title{background:#e5e7eb;padding:16px 18px;border-bottom:1px solid #d1d5db;}
+.file-title h2{font-size:20px;margin:0 0 6px 0;}
+.muted{color:#6b7280;font-size:13px;}
+table{width:100%;border-collapse:collapse;table-layout:fixed;}
+th{background:#f9fafb;text-align:left;padding:10px;border-bottom:1px solid #d1d5db;font-size:14px;}
+td{vertical-align:top;padding:0;border-bottom:1px solid #edf0f2;}
+.line-no{width:70px;text-align:right;color:#6b7280;background:#f9fafb;padding:9px 10px;font-family:Consolas,monospace;}
+.code{font-family:Consolas,'Courier New',monospace;white-space:pre-wrap;padding:9px 12px;background:#ffffff;}
+.result{padding:8px 10px;background:#fcfcfd;}
+.diagnostic{border-radius:8px;padding:8px 10px;margin:2px 0;font-size:14px;line-height:1.4;}
+.critical{background:#fee2e2;border-left:5px solid #dc2626;}
+.warning{background:#fef3c7;border-left:5px solid #d97706;}
+.info{background:#dbeafe;border-left:5px solid #2563eb;}
+.clean{color:#9ca3af;font-size:13px;padding:9px 0;}
+.badge{font-size:12px;font-weight:bold;letter-spacing:.3px;}
+.general{padding:14px 18px;background:#fff7ed;border-top:1px solid #fed7aa;}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>CodeSentinel Analiz Raporu</h1>
+<div>C kodu ve C++ analiz çıktısı yan yana gösterilir.</div>
+<div class="summary">
+<div class="summary-card"><strong>5</strong>Dosya</div>
+<div class="summary-card"><strong>6</strong>Toplam Bulgu</div>
+<div class="summary-card"><strong>2</strong>Kritik</div>
+<div class="summary-card"><strong>4</strong>Uyarı</div>
+<div class="summary-card"><strong>0</strong>Bilgi</div>
+</div>
+</div>
+<section class="file-card">
+<div class="file-title">
+<h2>test_R001_unused_variable.c</h2>
+<div class="muted">Sure: 0 ms | Bulgu: 1</div>
+</div>
+<table>
+<thead><tr><th style="width:70px;">Satır</th><th>C Kodu</th><th>C++ Analiz Çıktısı</th></tr></thead>
+<tbody>
+<tr>
+<td class="line-no">1</td>
+<td class="code">int main() {</td>
+<td class="result"><div class="diagnostic warning"><span class="badge">UYARI</span> <strong>R001</strong> - Degisken 'kullanilmayan' tanimlanmis fakat kullanilmamis. <span class="muted">(Kolon: 1)</span></div></td>
+</tr>
+<tr>
+<td class="line-no">2</td>
+<td class="code">    int kullanilan = 10;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">3</td>
+<td class="code">    int kullanilmayan = 20;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">4</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">5</td>
+<td class="code">    kullanilan = kullanilan + 1;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">6</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">7</td>
+<td class="code">    return 0;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">8</td>
+<td class="code">}</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="file-card">
+<div class="file-title">
+<h2>test_R002_uninitialized_variable.c</h2>
+<div class="muted">Sure: 0 ms | Bulgu: 1</div>
+</div>
+<table>
+<thead><tr><th style="width:70px;">Satır</th><th>C Kodu</th><th>C++ Analiz Çıktısı</th></tr></thead>
+<tbody>
+<tr>
+<td class="line-no">1</td>
+<td class="code">int main() {</td>
+<td class="result"><div class="diagnostic warning"><span class="badge">UYARI</span> <strong>R002</strong> - Degisken 'x' baslatilmadan kullaniliyor. <span class="muted">(Kolon: 1)</span></div></td>
+</tr>
+<tr>
+<td class="line-no">2</td>
+<td class="code">    int x;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">3</td>
+<td class="code">    int y = x + 1;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">4</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">5</td>
+<td class="code">    return y;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">6</td>
+<td class="code">}</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="file-card">
+<div class="file-title">
+<h2>test_R007_null_check_missing.c</h2>
+<div class="muted">Sure: 0 ms | Bulgu: 1</div>
+</div>
+<table>
+<thead><tr><th style="width:70px;">Satır</th><th>C Kodu</th><th>C++ Analiz Çıktısı</th></tr></thead>
+<tbody>
+<tr>
+<td class="line-no">1</td>
+<td class="code">int main() {</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">2</td>
+<td class="code">    int *ptr = malloc(4);</td>
+<td class="result"><div class="diagnostic warning"><span class="badge">UYARI</span> <strong>R007</strong> - malloc/calloc/realloc sonrasi NULL kontrolu yapilmamis: ptr <span class="muted">(Kolon: 1)</span></div></td>
+</tr>
+<tr>
+<td class="line-no">3</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">4</td>
+<td class="code">    *ptr;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">5</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">6</td>
+<td class="code">    return 0;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">7</td>
+<td class="code">}</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="file-card">
+<div class="file-title">
+<h2>test_R008_use_after_free.c</h2>
+<div class="muted">Sure: 0 ms | Bulgu: 1</div>
+</div>
+<table>
+<thead><tr><th style="width:70px;">Satır</th><th>C Kodu</th><th>C++ Analiz Çıktısı</th></tr></thead>
+<tbody>
+<tr>
+<td class="line-no">1</td>
+<td class="code">int main() {</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">2</td>
+<td class="code">    int *ptr = malloc(4);</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">3</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">4</td>
+<td class="code">    if (ptr == NULL) {</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">5</td>
+<td class="code">        return 1;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">6</td>
+<td class="code">    }</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">7</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">8</td>
+<td class="code">    free(ptr);</td>
+<td class="result"><div class="diagnostic critical"><span class="badge">KRITIK</span> <strong>R008</strong> - free edildikten sonra pointer tekrar kullaniliyor: ptr <span class="muted">(Kolon: 1)</span></div></td>
+</tr>
+<tr>
+<td class="line-no">9</td>
+<td class="code">    *ptr;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">10</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">11</td>
+<td class="code">    return 0;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">12</td>
+<td class="code">}</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="file-card">
+<div class="file-title">
+<h2>test_R012_uninitialized_pointer.c</h2>
+<div class="muted">Sure: 0 ms | Bulgu: 2</div>
+</div>
+<table>
+<thead><tr><th style="width:70px;">Satır</th><th>C Kodu</th><th>C++ Analiz Çıktısı</th></tr></thead>
+<tbody>
+<tr>
+<td class="line-no">1</td>
+<td class="code">int main() {</td>
+<td class="result"><div class="diagnostic warning"><span class="badge">UYARI</span> <strong>R002</strong> - Degisken 'ptr' baslatilmadan kullaniliyor. <span class="muted">(Kolon: 1)</span></div><div class="diagnostic critical"><span class="badge">KRITIK</span> <strong>R012</strong> - Pointer 'ptr' baslatilmadan dereference ediliyor. <span class="muted">(Kolon: 1)</span></div></td>
+</tr>
+<tr>
+<td class="line-no">2</td>
+<td class="code">    int *ptr;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">3</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">4</td>
+<td class="code">    *ptr;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">5</td>
+<td class="code"></td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">6</td>
+<td class="code">    return 0;</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+<tr>
+<td class="line-no">7</td>
+<td class="code">}</td>
+<td class="result"><div class="clean">Bulgu yok</div></td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+
+
+</body></html>
