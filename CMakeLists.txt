@@ -19,4 +19,6 @@ add_executable("SE-TeamProject-2026" main.cpp
         infrastructure/Preprocessor.cpp
         infrastructure/Preprocessor.h
         infrastructure/FileValidator.cpp
-        infrastructure/FileValidator.h)
+        infrastructure/FileValidator.h
+        infrastructure/FileLoader.cpp
+        infrastructure/FileLoader.h)
