@@ -11,7 +11,76 @@ vector<CodeMetric> MetricCalculator::calculate(
         const string& rawCode,
         const string& cleanCode
 ) {
-    return {};
+    vector<CodeMetric> metrics;
+
+    // Toplam satir sayisi
+    metrics.emplace_back(
+            "Toplam Satir Sayisi (LOC)",
+            countTotalLines(rawCode),
+            "satir",
+            "Orijinal kaynak dosyadaki toplam satir sayisi"
+    );
+
+    // Kod satiri
+    metrics.emplace_back(
+            "Kod Satiri",
+            countCodeLines(cleanCode),
+            "satir",
+            "Yorumlar temizlendikten sonraki bos olmayan kod satiri sayisi"
+    );
+
+    // Bos satir
+    metrics.emplace_back(
+            "Bos Satir",
+            countEmptyLines(rawCode),
+            "satir",
+            "Tamamen bos olan satir sayisi"
+    );
+
+    // Yorum satiri
+    metrics.emplace_back(
+            "Yorum Satiri",
+            countCommentLines(
+                    rawCode,
+                    cleanCode
+            ),
+            "satir",
+            "Yorum satiri sayisi"
+    );
+
+    // Fonksiyon sayisi
+    metrics.emplace_back(
+            "Fonksiyon Sayisi",
+            countFunctions(ast),
+            "adet",
+            "AST uzerindeki FUNCTION_DEF dugumu sayisi"
+    );
+
+    // Struct sayisi
+    metrics.emplace_back(
+            "Struct Sayisi",
+            countStructs(ast),
+            "adet",
+            "AST uzerindeki STRUCT_DEF dugumu sayisi"
+    );
+
+    // Degisken sayisi
+    metrics.emplace_back(
+            "Degisken Sayisi",
+            countVariables(ast),
+            "adet",
+            "AST uzerindeki VARIABLE_DECL dugumu sayisi"
+    );
+
+    // Ortalama fonksiyon uzunlugu
+    metrics.emplace_back(
+            "Ort. Fonksiyon Uzunlugu",
+            averageFunctionLength(ast),
+            "satir",
+            "Fonksiyonlarin ortalama satir uzunlugu"
+    );
+
+    return metrics;
 }
 
 int MetricCalculator::countTotalLines(
