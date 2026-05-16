@@ -48,5 +48,40 @@ bool DanglingPointerRule::hasNullAssignmentAfterFree(
         int freeLine,
         ASTNode* scope
 ) {
+    if (scope == nullptr) {
+        return false;
+    }
+
+    // Sadece free sonrasi satirlara bak
+    if (scope->getLine() > freeLine) {
+
+        // ptr = NULL veya ptr = 0
+        if (scope->getType() == ASTNodeType::ASSIGNMENT &&
+            scope->getValue() == varName) {
+
+            for (ASTNode* child : scope->getChildren()) {
+                if (child != nullptr &&
+                    (
+                            child->getValue() == "NULL" ||
+                            child->getValue() == "null" ||
+                            child->getValue() == "0"
+                    )) {
+                    return true;
+                    }
+            }
+            }
+    }
+
+    // Alt dugumlerde de NULL atamasi ara
+    for (ASTNode* child : scope->getChildren()) {
+        if (hasNullAssignmentAfterFree(
+                varName,
+                freeLine,
+                child
+        )) {
+            return true;
+        }
+    }
+
     return false;
 }
