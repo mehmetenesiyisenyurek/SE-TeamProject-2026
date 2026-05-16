@@ -53,6 +53,8 @@ add_executable("SE-TeamProject-2026"
         pointer/MetricCalculator.h
         pointer/DoubleFreeRule.h
         pointer/DoubleFreeRule.cpp
+        pointer/DanglingPointerRule.h
+        pointer/DanglingPointerRule.cpp
 
 )
 
