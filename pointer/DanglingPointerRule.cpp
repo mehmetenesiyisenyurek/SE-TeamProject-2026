@@ -3,7 +3,52 @@
 using namespace std;
 
 vector<Diagnostic> DanglingPointerRule::check(ASTNode* ast) {
-    return {};
+    vector<Diagnostic> diagnostics;
+
+    if (ast == nullptr) {
+        return diagnostics;
+    }
+
+    if (ast->getType() == ASTNodeType::FUNCTION_DEF) {
+        vector<pair<string, int>> freeCalls =
+                collectFreeCalls(ast);
+
+        for (const auto& freeCall : freeCalls) {
+            string variableName = freeCall.first;
+            int freeLine = freeCall.second;
+
+            // free sonrasi ptr = NULL yapilmamissa bilgi uyarisi uret
+            if (!hasNullAssignmentAfterFree(
+                    variableName,
+                    freeLine,
+                    ast
+            )) {
+                diagnostics.emplace_back(
+                        freeLine,
+                        0,
+                        "free sonrasi pointer NULL yapilmamis: " + variableName,
+                        DiagnosticSeverity::INFO,
+                        "rule",
+                        "R011",
+                        ""
+                );
+            }
+        }
+    }
+
+    // Alt dugumleri recursive tara
+    for (ASTNode* child : ast->getChildren()) {
+        vector<Diagnostic> childDiagnostics =
+                check(child);
+
+        diagnostics.insert(
+                diagnostics.end(),
+                childDiagnostics.begin(),
+                childDiagnostics.end()
+        );
+    }
+
+    return diagnostics;
 }
 
 vector<pair<string, int>> DanglingPointerRule::collectFreeCalls(ASTNode* node) {
