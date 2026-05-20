@@ -11,7 +11,7 @@ add_executable("SE-TeamProject-2026" main.cpp
         parser/ASTNode.cpp
         parser/ASTNode.h
         parser/Parser.cpp
-        parser/Parser.h)
+
         infrastructure/SourceFile.cpp
         infrastructure/SourceFile.h
         infrastructure/DiagnosticSeverity.h
@@ -23,3 +23,7 @@ add_executable("SE-TeamProject-2026" main.cpp
         infrastructure/ValidationResult.h
         infrastructure/Preprocessor.cpp
         infrastructure/Preprocessor.h)
+
+        parser/Parser.h
+        parser/InfiniteLoopRule.cpp
+        parser/InfiniteLoopRule.h)
