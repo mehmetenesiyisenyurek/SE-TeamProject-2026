@@ -1,68 +1,104 @@
-#ifndef NULL_DEREFERENCE_RULE_H
-#define NULL_DEREFERENCE_RULE_H
+#include "UseAfterFreeRule.h"
 
-#include <string>
-#include <vector>
-#include <utility>
+std::string UseAfterFreeRule::getId() const {
+    return "R008";
+}
 
-// DEĞİŞTİ:
-// NullDereferenceRule artık proje içerisindeki ortak IRule arayüzünü kullanıyor.
-#include "../syntax_analyzer/IRule.h"
+std::string UseAfterFreeRule::getName() const {
+    return "Use After Free Rule";
+}
 
-// DEĞİŞTİ:
-// Kendi ASTNode tanımı kaldırıldı.
-// Ortak parser AST yapısı kullanılmaya başlandı.
-#include "../parser/ASTNode.h"
+DiagnosticSeverity UseAfterFreeRule::getDefaultSeverity() const {
+    return DiagnosticSeverity::CRITICAL;
+}
 
-#include "../parser/ASTNodeType.h"
+std::vector<Diagnostic> UseAfterFreeRule::check(const ASTNode& ast) {
+    std::vector<Diagnostic> diagnostics;
 
-// DEĞİŞTİ:
-// Kendi Diagnostic yapısı kaldırıldı.
-// Ortak Diagnostic sistemi kullanılmaya başlandı.
-#include "../infrastructure/Diagnostic.h"
+    if (ast.getType() == ASTNodeType::FUNCTION_DEF) {
+        std::vector<std::pair<std::string, int>> freeCalls = findFreeCallSites(ast);
 
-#include "../infrastructure/DiagnosticSeverity.h"
+        for (const auto& freeCall : freeCalls) {
+            const std::string& variableName = freeCall.first;
+            int freeLine = freeCall.second;
 
-// malloc/calloc/realloc sonrasinda
-// NULL kontrolu yapilip yapilmadigini kontrol eder.
+            if (!variableName.empty() && isUsedAfterFree(variableName, freeLine, ast)) {
+                diagnostics.emplace_back(
+                    freeLine,
+                    1,
+                    "free edildikten sonra pointer tekrar kullaniliyor: " + variableName,
+                    getDefaultSeverity(),
+                    "rule",
+                    getId(),
+                    variableName
+                );
+            }
+        }
+    }
 
-// DEĞİŞTİ:
-// Class artık RuleEngine ile uyumlu olması için
-// IRule sınıfından türetildi.
-class NullDereferenceRule : public IRule {
+    for (const ASTNode* child : ast.getChildren()) {
+        if (child != nullptr) {
+            std::vector<Diagnostic> childDiagnostics = check(*child);
+            diagnostics.insert(diagnostics.end(), childDiagnostics.begin(), childDiagnostics.end());
+        }
+    }
 
-public:
+    return diagnostics;
+}
 
-    // DEĞİŞTİ:
-    // Rule ID'si eklendi.
-    // (R007 -> NULL dereference kontrolü)
-    std::string getId() const override;
+std::vector<std::pair<std::string, int>> UseAfterFreeRule::findFreeCallSites(const ASTNode& node) const {
+    std::vector<std::pair<std::string, int>> freeCalls;
 
-    // DEĞİŞTİ:
-    // Kural adı eklendi.
-    std::string getName() const override;
+    if (node.getType() == ASTNodeType::FUNCTION_CALL && node.getValue() == "free") {
+        const std::vector<ASTNode*>& children = node.getChildren();
 
-    // DEĞİŞTİ:
-    // Varsayılan diagnostic severity seviyesi tanımlandı.
-    DiagnosticSeverity getDefaultSeverity() const override;
+        if (!children.empty() && children[0] != nullptr) {
+            freeCalls.emplace_back(children[0]->getValue(), node.getLine());
+        }
+    }
 
-    // DEĞİŞTİ:
-    // RuleEngine standardına uygun hale getirildi.
-    // ASTNode* yerine const ASTNode& kullanılmaya başlandı.
-    std::vector<Diagnostic> check(const ASTNode& ast) override;
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            std::vector<std::pair<std::string, int>> childResults = findFreeCallSites(*child);
+            freeCalls.insert(freeCalls.end(), childResults.begin(), childResults.end());
+        }
+    }
 
-private:
+    return freeCalls;
+}
 
-    // malloc/calloc/realloc atamalarını AST üzerinde bulur.
-    std::vector<std::pair<std::string, int>>
-    findMallocAssignments(const ASTNode& node) const;
+bool UseAfterFreeRule::isUsedAfterFree(
+    const std::string& varName,
+    int freeLine,
+    const ASTNode& scope
+) const {
+    if (scope.getLine() > freeLine) {
+        if (isNullAssignment(varName, scope)) {
+            return false;
+        }
 
-    // İlgili pointer değişkeni için NULL kontrolü yapılıp yapılmadığını kontrol eder.
-    bool hasNullCheck(const std::string& varName,
-                      const ASTNode& scope) const;
+        if (scope.getValue() == varName) {
+            return true;
+        }
+    }
 
-    // AST içerisinde malloc/calloc/realloc çağrısı var mı kontrol eder.
-    bool containsAllocationCall(const ASTNode& node) const;
-};
+    for (const ASTNode* child : scope.getChildren()) {
+        if (child != nullptr && isUsedAfterFree(varName, freeLine, *child)) {
+            return true;
+        }
+    }
 
-#endif
+    return false;
+}
+
+bool UseAfterFreeRule::isNullAssignment(const std::string& varName, const ASTNode& node) const {
+    if (node.getType() == ASTNodeType::ASSIGNMENT && node.getValue() == varName) {
+        for (const ASTNode* child : node.getChildren()) {
+            if (child != nullptr && child->getValue() == "NULL") {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
