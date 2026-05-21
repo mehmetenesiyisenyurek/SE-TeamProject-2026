@@ -12,4 +12,5 @@ enum class DiagnosticSeverity {
     INFO //Bilgilendirme,stil önerileri (Mavi)
 };
 
+
 #endif //SE_TEAMPROJECT_2026_DIAGNOSTICSEVERITY_H

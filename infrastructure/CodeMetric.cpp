@@ -25,4 +25,5 @@ std::string CodeMetric::getUnit() const {
 
 std::string CodeMetric::getDescription() const {
     return description;
+
 }

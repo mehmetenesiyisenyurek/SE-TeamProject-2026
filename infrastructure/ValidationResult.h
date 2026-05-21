@@ -13,6 +13,7 @@ private:
     bool valid;
     std::string errorMessage;
 
+
 public:
     ValidationResult(bool valid,const std::string& errorMessage);
 

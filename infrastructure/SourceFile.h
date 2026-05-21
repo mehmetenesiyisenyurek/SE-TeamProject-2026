@@ -18,6 +18,7 @@ private:
     long fileSize;
     std::chrono::system_clock::time_point loadDate;
 
+
 public:
     //Constuctor (loadDate'i otomatik atar)
     //const ve & direk adresteki değeri alır kopyalama yapmaz program daha hızlı çalışır

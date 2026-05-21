@@ -52,5 +52,6 @@ std::string FileLoader::readFromDisk(const std::string& path) const {
         content += ch;
     }
 
+
     return content;
 }

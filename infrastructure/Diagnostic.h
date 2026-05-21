@@ -33,4 +33,5 @@ public:
 };
 
 
+
 #endif //SE_TEAMPROJECT_2026_DIAGNOSTIC_H

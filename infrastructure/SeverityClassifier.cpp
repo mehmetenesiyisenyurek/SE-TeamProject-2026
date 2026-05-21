@@ -15,6 +15,7 @@ std::string SeverityClassifier::getColorCode(DiagnosticSeverity severity) const 
         default:
             return "#2196F3";
     }
+
 }
 
 std::string SeverityClassifier::getLabel(DiagnosticSeverity severity) const {

@@ -40,4 +40,6 @@ std::string Diagnostic::getRuleId() const {
 
 std::string Diagnostic::getCodeSnippet() const {
     return codeSnippet;
+
+
 }

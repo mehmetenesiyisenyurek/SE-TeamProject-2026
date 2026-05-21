@@ -13,6 +13,7 @@ bool ValidationResult::isValid() const {
     return valid;
 }
 
+
 std::string ValidationResult::getErrorMessage() const {
     return errorMessage;
 }
