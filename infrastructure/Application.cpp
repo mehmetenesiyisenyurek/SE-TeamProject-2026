@@ -32,4 +32,7 @@ void Application::shutdown() {
     }
 
     std::cout << "CodeSentinel uygulamasi kapatildi." << std::endl;
+
+
 }
+

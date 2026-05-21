@@ -26,6 +26,7 @@ int Preprocessor::getCommentLineCount() const {
     return this->commentCount;
 }
 
+
 std::string Preprocessor::removeSingleLineComments(const std::string& code) {
     std::string result;
     bool inString = false;

@@ -12,6 +12,7 @@
 
 class FileValidator {
 public:
+
     ValidationResult validate(const SourceFile& file) const;
 
     bool checkExtension(const std::string& path) const;

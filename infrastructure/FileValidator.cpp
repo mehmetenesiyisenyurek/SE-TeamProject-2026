@@ -18,6 +18,7 @@ ValidationResult FileValidator::validate(const SourceFile& file) const {
         return {false, "Dosya içeriği bulunamadı."};
     }
 
+
     //Dosya okunabilir mi
     if (!checkReadable(file.getFilePath())) {
         return {false, "Dosya okunamıyor."};
