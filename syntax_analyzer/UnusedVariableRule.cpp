@@ -81,7 +81,7 @@ void UnusedVariableRule::collectDeclaredVars(
     std::vector<std::string>& declaredVars
 ) const {
 
-    /*
+
     if (node.getType() == ASTNodeType::VARIABLE_DECL) {
 
         std::string variableName = node.getValue();
@@ -96,7 +96,7 @@ void UnusedVariableRule::collectDeclaredVars(
         collectDeclaredVars(*child, declaredVars);
     }
 }
-    */
+
 }
 
 /*
@@ -107,7 +107,7 @@ void UnusedVariableRule::collectUsedVars(
     std::vector<std::string>& usedVars
 ) const {
 
-    /*
+
     if (
         node.getType() == ASTNodeType::EXPRESSION ||
         node.getType() == ASTNodeType::ASSIGNMENT ||
@@ -127,7 +127,7 @@ void UnusedVariableRule::collectUsedVars(
             collectUsedVars(*child, usedVars);
         }
     }
-    */
+
 }
 
 /*

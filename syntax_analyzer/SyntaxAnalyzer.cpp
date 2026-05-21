@@ -103,7 +103,7 @@ void SyntaxAnalyzer::checkMissingSemicolon(
     std::vector<Diagnostic>& diagnostics
 ){
 
-    /*
+
 if (
     node.getType() == ASTNodeType::VARIABLE_DECL ||
     node.getType() == ASTNodeType::ASSIGNMENT ||
@@ -138,7 +138,7 @@ for (const ASTNode* child : node.getChildren()) {
         checkMissingSemicolon(*child, tokens, diagnostics);
     }
 }
-*/
+
 }
 
 /*
@@ -151,7 +151,7 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
     std::vector<Diagnostic>& diagnostics
 ) {
 
-    /*
+
     std::stack<Token> bracketStack;
 
     for (const Token& token : tokens) {
@@ -190,7 +190,7 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
 
         diagnostics.push_back(diagnostic);
     }
-    */
+
 }
 
 /*
@@ -203,7 +203,7 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
     std::vector<Diagnostic>& diagnostics
 ) {
 
-    /*
+
     std::stack<Token> parenthesisStack;
 
     for (const Token& token : tokens) {
@@ -264,7 +264,7 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
 
         diagnostics.push_back(diagnostic);
     }
-    */
+
 }
 
 /*
@@ -277,7 +277,7 @@ void SyntaxAnalyzer::checkInvalidDeclarations(
     std::vector<Diagnostic>& diagnostics
 ) {
 
-    /*
+
     if (node.getType() == ASTNodeType::VARIABLE_DECL) {
 
         if (node.getValue().empty()) {
@@ -297,5 +297,5 @@ void SyntaxAnalyzer::checkInvalidDeclarations(
             checkInvalidDeclarations(*child, diagnostics);
         }
     }
-    */
+
 }

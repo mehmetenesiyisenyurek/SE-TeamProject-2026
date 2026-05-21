@@ -69,7 +69,7 @@ void UninitializedPointerRule::collectUninitializedPointers(
     std::vector<std::string>& pointers
 ) const {
 
-    /*
+
     if (node.getType() == ASTNodeType::VARIABLE_DECL) {
 
         std::string pointerName = node.getValue();
@@ -84,7 +84,7 @@ void UninitializedPointerRule::collectUninitializedPointers(
             collectUninitializedPointers(*child, pointers);
         }
     }
-    */
+
 }
 
 /*
@@ -95,7 +95,7 @@ void UninitializedPointerRule::collectDereferencedPointers(
     std::vector<std::string>& dereferencedPointers
 ) const {
 
-    /*
+
     if (node.getType() == ASTNodeType::EXPRESSION) {
 
         std::string pointerName = node.getValue();
@@ -110,7 +110,7 @@ void UninitializedPointerRule::collectDereferencedPointers(
             collectDereferencedPointers(*child, dereferencedPointers);
         }
     }
-    */
+
 }
 
 /*

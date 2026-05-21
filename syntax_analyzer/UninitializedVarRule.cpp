@@ -69,7 +69,7 @@ void UninitializedVarRule::collectUninitializedVars(
     std::vector<std::string>& uninitializedVars
 ) const {
 
-    /*
+
     if (node.getType() == ASTNodeType::VARIABLE_DECL) {
 
         std::string variableName = node.getValue();
@@ -84,7 +84,7 @@ void UninitializedVarRule::collectUninitializedVars(
             collectUninitializedVars(*child, uninitializedVars);
         }
     }
-    */
+
 }
 
 /*
@@ -95,7 +95,7 @@ void UninitializedVarRule::collectUsedVars(
     std::vector<std::string>& usedVars
 ) const {
 
-    /*
+
     if (
         node.getType() == ASTNodeType::EXPRESSION ||
         node.getType() == ASTNodeType::ASSIGNMENT ||
@@ -115,7 +115,7 @@ void UninitializedVarRule::collectUsedVars(
             collectUsedVars(*child, usedVars);
         }
     }
-    */
+
 }
 
 /*
