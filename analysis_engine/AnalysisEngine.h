@@ -1,69 +1,13 @@
-#ifndef ANALYSIS_ENGINE_H
-#define ANALYSIS_ENGINE_H
+#pragma once
 
-#include <vector>
 #include <string>
+#include "../infrastructure/AnalysisResult.h"
 
-using namespace std;
-
-class FileLoader;
-class Preprocessor;
-class Lexer;
-class Parser;
-class SyntaxAnalyzer;
-class RuleEngine;
-class MetricCalculator;
-class SeverityClassifier;
-
-class SourceFile;
-class AnalysisResult;
-class Diagnostic;
-class CodeMetric;
-class ASTNode;
-class Token;
-
-// Tüm analiz sürecini yöneten merkez sınıf
+// Tüm analiz sürecini yöneten merkezi motor
 class AnalysisEngine {
-
-private:
-
-    // Dosya yükleyici
-    FileLoader* fileLoader;
-
-    // Yorum temizleyici
-    Preprocessor* preprocessor;
-
-    // Lexer
-    Lexer* lexer;
-
-    // Parser
-    Parser* parser;
-
-    // Syntax analyzer
-    SyntaxAnalyzer* syntaxAnalyzer;
-
-    // Rule engine
-    RuleEngine* ruleEngine;
-
-    // Kod metrik hesaplayıcı
-    MetricCalculator* metricCalculator;
-
-    // Severity belirleyici
-    SeverityClassifier* severityClassifier;
-
 public:
-
-    // Yapıcı metod
     AnalysisEngine();
-
-    // Yıkıcı metod
     ~AnalysisEngine();
 
-    // Ana analiz fonksiyonu
-    AnalysisResult analyze(SourceFile file);
-
-    // Tüm bileşenler hazır mı?
-    bool isReady();
+    AnalysisResult runAnalysis(const std::string& filePath);
 };
-
-#endif
