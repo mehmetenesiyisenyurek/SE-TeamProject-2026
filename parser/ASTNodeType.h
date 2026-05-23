@@ -4,6 +4,7 @@
 
 #ifndef ASTNODETYPE_H
 #define ASTNODETYPE_H
+#include <string>
 // Yazılan kodun sınıfını belirler.
 enum class ASTNodeType {
     PROGRAM,         // Kök düğüm

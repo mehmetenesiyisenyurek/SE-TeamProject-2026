@@ -1,4 +1,6 @@
 #include "UninitializedPointerRule.h"
+#include "../parser/ASTNode.h"
+#include "../parser/ASTNodeType.h"
 
 //#include "../parser/ASTNode.h"
 //#include "../parser/ASTNodeType.h"

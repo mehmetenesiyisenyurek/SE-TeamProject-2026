@@ -1,132 +1,53 @@
 #include "DanglingPointerRule.h"
 
-using namespace std;
+std::string DanglingPointerRule::getId() const { return "R011"; }
+std::string DanglingPointerRule::getName() const { return "Dangling Pointer Rule"; }
+DiagnosticSeverity DanglingPointerRule::getDefaultSeverity() const { return DiagnosticSeverity::WARNING; }
 
-vector<Diagnostic> DanglingPointerRule::check(ASTNode* ast) {
-    vector<Diagnostic> diagnostics;
-
-    if (ast == nullptr) {
-        return diagnostics;
-    }
-
-    if (ast->getType() == ASTNodeType::FUNCTION_DEF) {
-        vector<pair<string, int>> freeCalls =
-                collectFreeCalls(ast);
-
-        for (const auto& freeCall : freeCalls) {
-            string variableName = freeCall.first;
-            int freeLine = freeCall.second;
-
-            // free sonrasi ptr = NULL yapilmamissa bilgi uyarisi uret
-            if (!hasNullAssignmentAfterFree(
-                    variableName,
-                    freeLine,
-                    ast
-            )) {
-                diagnostics.emplace_back(
-                        freeLine,
-                        0,
-                        "free sonrasi pointer NULL yapilmamis: " + variableName,
-                        DiagnosticSeverity::INFO,
-                        "rule",
-                        "R011",
-                        ""
-                );
+std::vector<Diagnostic> DanglingPointerRule::check(const ASTNode& ast) {
+    std::vector<Diagnostic> diagnostics;
+    if (ast.getType() == ASTNodeType::FUNCTION_DEF) {
+        auto calls = collectFreeCalls(ast);
+        for (const auto& c : calls) {
+            if (!hasNullAssignmentAfterFree(c.first, c.second, ast)) {
+                diagnostics.emplace_back(c.second, 1,
+                    "free sonrasi pointer NULL yapilmamis: " + c.first,
+                    getDefaultSeverity(), "rule", getId(), c.first);
             }
         }
     }
-
-    // Alt dugumleri recursive tara
-    for (ASTNode* child : ast->getChildren()) {
-        vector<Diagnostic> childDiagnostics =
-                check(child);
-
-        diagnostics.insert(
-                diagnostics.end(),
-                childDiagnostics.begin(),
-                childDiagnostics.end()
-        );
+    for (const ASTNode* child : ast.getChildren()) {
+        if (child != nullptr) {
+            auto sub = check(*child);
+            diagnostics.insert(diagnostics.end(), sub.begin(), sub.end());
+        }
     }
-
     return diagnostics;
 }
 
-vector<pair<string, int>> DanglingPointerRule::collectFreeCalls(ASTNode* node) {
-    vector<pair<string, int>> freeCalls;
-
-    if (node == nullptr) {
-        return freeCalls;
+std::vector<std::pair<std::string, int>> DanglingPointerRule::collectFreeCalls(const ASTNode& node) const {
+    std::vector<std::pair<std::string, int>> calls;
+    if (node.getType() == ASTNodeType::FUNCTION_CALL && node.getValue() == "free") {
+        const auto& ch = node.getChildren();
+        if (!ch.empty() && ch[0] != nullptr) calls.emplace_back(ch[0]->getValue(), node.getLine());
     }
-
-    // free(...) fonksiyon cagrisi mi?
-    if (node->getType() == ASTNodeType::FUNCTION_CALL &&
-        node->getValue() == "free") {
-
-        const vector<ASTNode*>& children = node->getChildren();
-
-        // free(ptr) parametresini al
-        if (!children.empty() && children[0] != nullptr) {
-            string variableName = children[0]->getValue();
-            int lineNumber = node->getLine();
-
-            freeCalls.emplace_back(variableName, lineNumber);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) {
+            auto sub = collectFreeCalls(*child);
+            calls.insert(calls.end(), sub.begin(), sub.end());
         }
-        }
-
-    // Alt dugumlerde de free ara
-    for (ASTNode* child : node->getChildren()) {
-        vector<pair<string, int>> childResults =
-                collectFreeCalls(child);
-
-        freeCalls.insert(
-                freeCalls.end(),
-                childResults.begin(),
-                childResults.end()
-        );
     }
-
-    return freeCalls;
+    return calls;
 }
 
-bool DanglingPointerRule::hasNullAssignmentAfterFree(
-        const string& varName,
-        int freeLine,
-        ASTNode* scope
-) {
-    if (scope == nullptr) {
-        return false;
-    }
-
-    // Sadece free sonrasi satirlara bak
-    if (scope->getLine() > freeLine) {
-
-        // ptr = NULL veya ptr = 0
-        if (scope->getType() == ASTNodeType::ASSIGNMENT &&
-            scope->getValue() == varName) {
-
-            for (ASTNode* child : scope->getChildren()) {
-                if (child != nullptr &&
-                    (
-                            child->getValue() == "NULL" ||
-                            child->getValue() == "null" ||
-                            child->getValue() == "0"
-                    )) {
-                    return true;
-                    }
-            }
-            }
-    }
-
-    // Alt dugumlerde de NULL atamasi ara
-    for (ASTNode* child : scope->getChildren()) {
-        if (hasNullAssignmentAfterFree(
-                varName,
-                freeLine,
-                child
-        )) {
-            return true;
+bool DanglingPointerRule::hasNullAssignmentAfterFree(const std::string& varName, int freeLine, const ASTNode& scope) const {
+    if (scope.getLine() > freeLine && scope.getType() == ASTNodeType::ASSIGNMENT && scope.getValue() == varName) {
+        for (const ASTNode* child : scope.getChildren()) {
+            if (child != nullptr && child->getValue() == "NULL") return true;
         }
     }
-
+    for (const ASTNode* child : scope.getChildren()) {
+        if (child != nullptr && hasNullAssignmentAfterFree(varName, freeLine, *child)) return true;
+    }
     return false;
 }

@@ -1,43 +1,22 @@
 #include "GotoUsageRule.h"
 
-std::vector<Diagnostic> GotoUsageRule::check(ASTNode* root)
-{
+std::string GotoUsageRule::getId() const { return "R005"; }
+std::string GotoUsageRule::getName() const { return "Goto Usage Rule"; }
+DiagnosticSeverity GotoUsageRule::getDefaultSeverity() const { return DiagnosticSeverity::WARNING; }
+
+std::vector<Diagnostic> GotoUsageRule::check(const ASTNode& root) {
     std::vector<Diagnostic> diagnostics;
-
-    if (root == nullptr)
-    {
-        return diagnostics;
-    }
-
     traverseAST(root, diagnostics);
-
     return diagnostics;
 }
 
-void GotoUsageRule::traverseAST(
-    ASTNode* node,
-    std::vector<Diagnostic>& diagnostics
-)
-{
-    if (node == nullptr)
-    {
-        return;
+void GotoUsageRule::traverseAST(const ASTNode& node, std::vector<Diagnostic>& diagnostics) const {
+    if (node.getValue() == "goto") {
+        diagnostics.emplace_back(node.getLine(), 1,
+            "goto kullanimi tespit edildi. Yapisal kontrol akisi tercih edin.",
+            getDefaultSeverity(), "rule", getId(), node.getValue());
     }
-
-    if (node->getType() == "GOTO_STATEMENT")
-    {
-        diagnostics.push_back(
-            Diagnostic(
-                "Usage of goto statement detected",
-                DiagnosticSeverity::WARNING,
-                node->getLine(),
-                node->getColumn()
-            )
-        );
-    }
-
-    for (ASTNode* child : node->getChildren())
-    {
-        traverseAST(child, diagnostics);
+    for (const ASTNode* child : node.getChildren()) {
+        if (child != nullptr) traverseAST(*child, diagnostics);
     }
 }

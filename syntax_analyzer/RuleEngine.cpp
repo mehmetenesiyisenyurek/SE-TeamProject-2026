@@ -3,6 +3,15 @@
 #include "UnusedVariableRule.h"
 #include "UninitializedVarRule.h"
 #include "UninitializedPointerRule.h"
+#include "../lexer/MagicNumberRule.h"
+#include "../lexer/FunctionLengthRule.h"
+#include "../lexer/GotoUsageRule.h"
+#include "../parser/InfiniteLoopRule.h"
+#include "../pointer/NullDereferenceRule.h"
+#include "../pointer/UseAfterFreeRule.h"
+#include "../pointer/MemoryLeakRule.h"
+#include "../pointer/DoubleFreeRule.h"
+#include "../pointer/DanglingPointerRule.h"
 
 /*
  * RuleEngine oluşturulduğunda bu modüle ait varsayılan analiz kurallarını ekler.
@@ -24,6 +33,33 @@ void RuleEngine::registerDefaultRules() {
     addRule(ownedRules.back().get());
 
     ownedRules.push_back(std::make_unique<UninitializedPointerRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<MagicNumberRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<FunctionLengthRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<GotoUsageRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<InfiniteLoopRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<NullDereferenceRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<UseAfterFreeRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<MemoryLeakRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<DoubleFreeRule>());
+    addRule(ownedRules.back().get());
+
+    ownedRules.push_back(std::make_unique<DanglingPointerRule>());
     addRule(ownedRules.back().get());
 }
 

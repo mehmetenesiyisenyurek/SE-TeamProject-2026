@@ -1,4 +1,8 @@
 #include "SyntaxAnalyzer.h"
+#include "../parser/ASTNode.h"
+#include "../parser/ASTNodeType.h"
+#include "../lexer/Token.h"
+#include <stack>
 
 //#include "../lexer/Token.h"
 //#include "../parser/ASTNode.h"
@@ -166,8 +170,8 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
                 Diagnostic diagnostic = createSyntaxDiagnostic(
                     token.getLine(),
                     token.getColumn(),
-                    "Unmatched closing bracket",
-                );
+                    "Unmatched closing bracket"
+    );
 
                 diagnostics.push_back(diagnostic);
             }
@@ -185,8 +189,8 @@ void SyntaxAnalyzer::checkUnmatchedBrackets(
         Diagnostic diagnostic = createSyntaxDiagnostic(
             token.getLine(),
             token.getColumn(),
-            "Unmatched opening bracket",
-        );
+            "Unmatched opening bracket"
+    );
 
         diagnostics.push_back(diagnostic);
     }
@@ -218,8 +222,8 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
                 Diagnostic diagnostic = createSyntaxDiagnostic(
                     token.getLine(),
                     token.getColumn(),
-                    "Unmatched closing parenthesis",
-                );
+                    "Unmatched closing parenthesis"
+    );
 
                 diagnostics.push_back(diagnostic);
             }
@@ -241,7 +245,7 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
                     Diagnostic diagnostic = createSyntaxDiagnostic(
                         token.getLine(),
                         token.getColumn(),
-                        "Mismatched parenthesis type",
+                        "Mismatched parenthesis type"
                     );
 
                     diagnostics.push_back(diagnostic);
@@ -259,7 +263,7 @@ void SyntaxAnalyzer::checkUnmatchedParentheses(
         Diagnostic diagnostic = createSyntaxDiagnostic(
             token.getLine(),
             token.getColumn(),
-            "Unmatched opening parenthesis",
+            "Unmatched opening parenthesis"
         );
 
         diagnostics.push_back(diagnostic);
@@ -285,7 +289,7 @@ void SyntaxAnalyzer::checkInvalidDeclarations(
             Diagnostic diagnostic = createSyntaxDiagnostic(
                 node.getLine(),
                 1,
-                "Invalid variable declaration",
+                "Invalid variable declaration"
             );
 
             diagnostics.push_back(diagnostic);

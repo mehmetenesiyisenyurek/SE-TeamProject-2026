@@ -1,40 +1,47 @@
 cmake_minimum_required(VERSION 3.20)
-
-# Proje ismi bir kez tanımlanır
-project("SE-TeamProject-2026")
+project(CodeSentinel LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Alttaki boş project() komutunu sildik
-add_executable("SE-TeamProject-2026" main.cpp
-        parser/ASTNodeType.h
-        parser/ASTNode.cpp
-        parser/ASTNode.h
-        parser/Parser.cpp
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    infrastructure
+    lexer
+    parser
+    syntax_analyzer
+    pointer
+    analysis_engine
+    reporting
+    services
+    gui_winapi
+)
 
-        infrastructure/SourceFile.cpp
-        infrastructure/SourceFile.h
-        infrastructure/DiagnosticSeverity.h
-        infrastructure/Diagnostic.cpp
-        infrastructure/Diagnostic.h
-        infrastructure/CodeMetric.cpp
-        infrastructure/CodeMetric.h
-        infrastructure/ValidationResult.cpp
-        infrastructure/ValidationResult.h
-        syntax_analyzer/IRule.h
-        syntax_analyzer/RuleEngine.h
-        syntax_analyzer/RuleEngine.cpp
-        syntax_analyzer/UnusedVariableRule.h
-        syntax_analyzer/UnusedVariableRule.cpp
-        syntax_analyzer/UninitializedVarRule.h
-        syntax_analyzer/UninitializedVarRule.cpp
-        syntax_analyzer/UninitializedPointerRule.h
-        syntax_analyzer/UninitializedPointerRule.cpp
-        syntax_analyzer/SyntaxAnalyzer.h
-        syntax_analyzer/SyntaxAnalyzer.cpp)
-        infrastructure/Preprocessor.cpp
-        infrastructure/Preprocessor.h)
+file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS
+    "infrastructure/*.cpp"
+    "lexer/*.cpp"
+    "parser/*.cpp"
+    "syntax_analyzer/*.cpp"
+    "pointer/*.cpp"
+    "analysis_engine/*.cpp"
+    "reporting/*.cpp"
+    "services/*.cpp"
+)
 
-        parser/Parser.h
-        parser/InfiniteLoopRule.cpp
-        parser/InfiniteLoopRule.h)
+add_library(CodeSentinelCore STATIC ${CORE_SOURCES})
+target_include_directories(CodeSentinelCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Konsol surumu: Her sistemde calisir.
+add_executable(CodeSentinelCLI main.cpp)
+target_link_libraries(CodeSentinelCLI PRIVATE CodeSentinelCore)
+
+# Qt'siz / Designer'siz Windows masaustu arayuzu.
+# CLion + MinGW ortaminda direkt target olarak secilip calistirilir.
+if (WIN32)
+    add_executable(CodeSentinelDesktop WIN32
+        gui_winapi/main_winapi.cpp
+    )
+    target_link_libraries(CodeSentinelDesktop PRIVATE CodeSentinelCore comdlg32)
+else()
+    message(WARNING "CodeSentinelDesktop WinAPI kullandigi icin sadece Windows'ta olusur. Konsol icin CodeSentinelCLI calisir.")
+endif()
