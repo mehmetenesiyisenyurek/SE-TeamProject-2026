@@ -496,7 +496,7 @@ void chooseFile(HWND owner) {
     OPENFILENAMEW ofn{};
     ofn.lStructSize = sizeof(ofn);
     ofn.hwndOwner = owner;
-    ofn.lpstrFilter = L"C/C++ Dosyalari\0*.c;*.cpp;*.h;*.hpp;*.txt\0Tum Dosyalar\0*.*\0";
+    ofn.lpstrFilter = L"C Dosyalari\0*.c\0";
     ofn.lpstrFile = fileName;
     ofn.nMaxFile = MAX_PATH;
     ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST;
