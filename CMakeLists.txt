@@ -37,13 +37,14 @@ add_library(CodeSentinelCore STATIC ${CORE_SOURCES})
 target_include_directories(CodeSentinelCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Konsol surumu: Her sistemde calisir.
-add_executable(CodeSentinelCLI main.cpp)
+add_executable(CodeSentinelCLI main.cpp app.rc)
 target_link_libraries(CodeSentinelCLI PRIVATE CodeSentinelCore)
 
 # Qt'siz / Designer'siz Windows masaustu arayuzu.
 if (WIN32)
     add_executable(CodeSentinelDesktop WIN32
             gui_winapi/main_winapi.cpp
+            app.rc
     )
     target_link_libraries(CodeSentinelDesktop PRIVATE CodeSentinelCore comdlg32)
 else()

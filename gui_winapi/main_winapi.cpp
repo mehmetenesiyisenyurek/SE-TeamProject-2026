@@ -9,6 +9,7 @@
 
 #include "services/AnalysisService.h"
 
+#define IDI_ICON1 101
 #define ID_BTN_SELECT     1001
 #define ID_BTN_ANALYZE    1002
 #define ID_EDIT_PATH      1003
@@ -644,6 +645,24 @@ LRESULT CALLBACK windowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
         case WM_CREATE: {
             g_bgBrush = CreateSolidBrush(COLOR_BG);
+
+            HICON hIconBig = (HICON)LoadImage(
+                GetModuleHandle(NULL),
+                MAKEINTRESOURCE(101),
+                IMAGE_ICON,
+                32, 32,
+                LR_DEFAULTCOLOR
+            );
+            HICON hIconSmall = (HICON)LoadImage(
+                GetModuleHandle(NULL),
+                MAKEINTRESOURCE(101),
+                IMAGE_ICON,
+                16, 16,
+                LR_DEFAULTCOLOR
+            );
+            SendMessage(hwnd, WM_SETICON, ICON_BIG,   (LPARAM)hIconBig);
+            SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIconSmall);
+
             g_panelBrush = CreateSolidBrush(COLOR_PANEL);
             g_editBrush = CreateSolidBrush(COLOR_EDIT);
             g_font = CreateFontW(19, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
