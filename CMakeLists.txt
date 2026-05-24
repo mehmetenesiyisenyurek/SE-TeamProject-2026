@@ -10,40 +10,40 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        infrastructure
-        lexer
-        parser
-        syntax_analyzer
-        pointer
-        analysis_engine
-        reporting
-        services
-        gui_winapi
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/infrastructure
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/lexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/parser
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/syntax_analyzer
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/pointer
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/analysis_engine
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/reporting
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/services
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/gui_winapi
 )
 
 file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS
-        "infrastructure/*.cpp"
-        "lexer/*.cpp"
-        "parser/*.cpp"
-        "syntax_analyzer/*.cpp"
-        "pointer/*.cpp"
-        "analysis_engine/*.cpp"
-        "reporting/*.cpp"
-        "services/*.cpp"
+        "src/infrastructure/*.cpp"
+        "src/lexer/*.cpp"
+        "src/parser/*.cpp"
+        "src/syntax_analyzer/*.cpp"
+        "src/pointer/*.cpp"
+        "src/analysis_engine/*.cpp"
+        "src/reporting/*.cpp"
+        "src/services/*.cpp"
 )
 
 add_library(CodeSentinelCore STATIC ${CORE_SOURCES})
-target_include_directories(CodeSentinelCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(CodeSentinelCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # Konsol surumu: Her sistemde calisir.
-add_executable(CodeSentinelCLI main.cpp app.rc)
+add_executable(CodeSentinelCLI src/main.cpp app.rc)
 target_link_libraries(CodeSentinelCLI PRIVATE CodeSentinelCore)
 
 # Qt'siz / Designer'siz Windows masaustu arayuzu.
 if (WIN32)
     add_executable(CodeSentinelDesktop WIN32
-            gui_winapi/main_winapi.cpp
+            src/gui_winapi/main_winapi.cpp
             app.rc
     )
     target_link_libraries(CodeSentinelDesktop PRIVATE CodeSentinelCore comdlg32)
